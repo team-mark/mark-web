@@ -5,7 +5,7 @@
  */
 
 var app = require('./lib');
-var debug = require('debug')('api-shell:server');
+var debug = require('debug')('mark-web:server');
 var http = require('http');
 
 /**

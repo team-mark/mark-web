@@ -1,0 +1,8 @@
+extends layout
+
+block content
+  h1= title
+  #app
+    span(v-bind:title='message')
+      | Hover your mouse over me for a few seconds
+      | to see my dynamically bound title!

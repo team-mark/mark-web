@@ -1,7 +1,8 @@
 {
     "src": [
         "index.js",
-        "src"
+        "src",
+        "src/public/js/**/*.js"
     ],
     "dest": "lib",
     "clean": [

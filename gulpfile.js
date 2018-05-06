@@ -140,7 +140,7 @@ function buildTask(callback) {
 // Watching
 gulp.task('watch', 'Contiuous build', ['build'], watchTask);
 function watchTask(callback) {
-  gulp.watch(settings.tsfiles, ['tslint', `typescript`]);
+  gulp.watch([settings.src, settings.tsfiles], ['tslint', `typescript`]);
 }
 
 // Cleaning

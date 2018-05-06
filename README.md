@@ -1,4 +1,4 @@
-# ts-node-api-shell
+# ts-node-mark-web
 A shell project for nodejs + typescript web api applications.
 
 ## Features
