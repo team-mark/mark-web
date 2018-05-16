@@ -2,17 +2,36 @@ const app = new Vue({
     el: '#app',
     data: function () {
         return {
-            message: null
+            message: null,
+            body: null
         }
     },
     created: function () {
-        this.loadMessage()
+        this.loadMessage();
+        this.loadBody();
     },
     methods: {
         loadMessage: function () {
             this.message = 'this page was loaded at' + new Date().toISOString();
+        },
+
+        loadBody: function () {
+            // GET /someUrl
+            this.$http.get('http://dev-mark-services.azurewebsites.net/')
+                .then(function (response) {
+
+                    // get body data
+                    this.body = response.body;
+
+                },
+                    function (error) {
+                        // error callback
+                        console.log(error)
+                        this.body = error;
+                    });
         }
     }
+
 });
 
 // var apiURL = 'https://api.github.com/repos/vuejs/vue/commits?per_page=3&sha='
