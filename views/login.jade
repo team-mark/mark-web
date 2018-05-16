@@ -10,5 +10,5 @@ block content
                 input(type='email', id='inputEmail', class="form-control    " placeholder='Email Address')
                 label(for = "inputPassword", class="sr-only") Password
                 input(type="password", id="inputPassword", class="form-control", placeholder="Password")
-                button(class="btn btn-lg btn-primary btn-block", type="submit") Sign in
-                {{response}}
+                button(class="btn btn-lg btn-primary btn-block", v-on:click="submitForm", type="button") Sign in
+                
