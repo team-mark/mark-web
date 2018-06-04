@@ -1,0 +1,19 @@
+extends layout
+
+block content
+    Title= title
+    #verifyPhone
+    form()
+        //- Phonenumber check needs to be here
+        //- Need phone number, button to send, then confirmation code,
+            then another button to verify, then enable the rest of the forum
+        input(type="tel",id="phoneNumber", class="form-control", placeholder="Phone Number")
+        // Submit button
+    #signup
+    form()
+        //- TODO: rename id, class; reader view
+        input(id="confirmationCode", class="form-control", placeholder="Confirmation Code")
+        input(type='email', id='inputEmail', class="form-control", placeholder='Email Address')
+        input(type="password", id="inputPassword", class="form-control", placeholder="Password")
+        input(type="password", id="confirmPassword", class="form-control", placeholder="Confirm Password")
+        //- Then final submit button
