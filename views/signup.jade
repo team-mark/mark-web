@@ -1,19 +1,21 @@
 extends layout
 
+
 block content
-    Title= title
-    #verifyPhone
+    h1= title
+    #signup
     form()
         //- Phonenumber check needs to be here
         //- Need phone number, button to send, then confirmation code,
             then another button to verify, then enable the rest of the forum
-        input(type="tel",id="phoneNumber", class="form-control", placeholder="Phone Number")
-        // Submit button
-    #signup
-    form()
-        //- TODO: rename id, class; reader view
-        input(id="confirmationCode", class="form-control", placeholder="Confirmation Code")
-        input(type='email', id='inputEmail', class="form-control", placeholder='Email Address')
-        input(type="password", id="inputPassword", class="form-control", placeholder="Password")
-        input(type="password", id="confirmPassword", class="form-control", placeholder="Confirm Password")
-        //- Then final submit button
+        input(type="text", v-model="inputUsername", class="form-control", placeholder="Username")
+        input(type="password", v-model="inputPassword", class="form-control", placeholder="Password")
+        input(type="tel", v-model="inputPhone", class="form-control", placeholder="Phone Number")
+        button(class="btn btn-lg btn-primary btn-block", v-on:click="getConfirmationCode",type="button") Get Confirmation Code
+
+        input(type="text", v-model="inputCode", class="form-control", v-bind:class="{active: isActive}", placeholder="Confirmation Code")
+        button(class="btn btn-lg btn-primary btn-block", v-on:click="submitForm", v-bind:class="{active: isActive}", type="button") Submit
+        //- Maybe I should never use submitform, and do all the logic in the js? <- this is retarded, submitForm is a function
+
+
+    script(src='js/sha256.min.js')

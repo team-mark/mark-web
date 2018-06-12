@@ -2,7 +2,9 @@ const login = new Vue({
     el: '#login',
     data: function () {
         return {
-            response: "null"
+            response: "null",
+            inputUsername: "",
+            inputPassword: ""
         }
     },
     methods: {
@@ -10,8 +12,8 @@ const login = new Vue({
             if(event) event.preventDefault();
             this.$http.post("/accounts/login",
                 {
-                    handle: "handle",
-                    key: "key",
+                    handle: this.inputUsername,
+                    key: this.inputPassword,
 
                 })
                 .then(function (response) {
@@ -20,11 +22,12 @@ const login = new Vue({
                     this.response = response.body;
 
                 },
-                    function (error) {
-                        // error callback
-                        console.log(error)
-                        this.response = error;
-                    });
+                function (error) {
+                    // error callback
+                    console.log(error)
+                    this.response = error;
+                });
+                
         }
     }
 })

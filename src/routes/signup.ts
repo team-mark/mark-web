@@ -8,8 +8,8 @@ router.get('/', index);
 // Route definitions
 function index(req: express.Request, res: express.Response, next: express.NextFunction): void {
     res.render('signup', {
-        title: 'Mark Signup',
+        title: 'Mark Mobile Verification',
         pageScript: 'signup',
         pageStyle: 'signup'
-    });
+    }); 
 }

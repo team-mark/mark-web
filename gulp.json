@@ -2,7 +2,8 @@
     "src": [
         "index.js",
         "src",
-        "src/public/js/**/*.js"
+        "src/public/js/**/*.js",
+        "src/public/pages/**/*.js"
     ],
     "dest": "lib",
     "clean": [
