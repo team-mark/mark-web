@@ -1,6 +1,6 @@
 Vue.component('mark-component', {
     props: ['author', 'content'],
-    template: '<div class="card" >' + 
+    template: '<div class="card bg-light mb-3" >' + 
                 '<div class="card-body">' +
                 '<h5 class="card-title">{{author}}</h5>' + 
                 '<p class="card-text">{{content}}</p>' +
