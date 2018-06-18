@@ -3,7 +3,8 @@
         "index.js",
         "src",
         "src/public/js/**/*.js",
-        "src/public/pages/**/*.js"
+        "src/public/pages/**/*.js",
+        "src/public/views/*.jade"
     ],
     "dest": "lib",
     "clean": [
