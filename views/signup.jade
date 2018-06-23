@@ -16,8 +16,13 @@ block content
             input(type="tel", v-model="inputPhone", class="form-control", placeholder="Phone Number")
             button(class="btn btn-lg btn-primary btn-block", v-on:click="getConfirmationCode",type="button") Get Confirmation Code
 
-            input(type="text", v-model="inputCode", class="form-control", v-bind:class="{active: isActive}", placeholder="Confirmation Code")
-            button(class="btn btn-lg btn-primary btn-block", @click="submitForm", v-bind:class="{active: isActive}", type="button") Submit
+            //- TODO: hashing progress bar, maybe make this a componenet and reference it
+            h5(v-if="hashing") Hashing Password
+            //- b-progress(:value="value" :max="max" show-value class="mb-3")
+            //- Magic number for progress bar, remove later
+
+            input(type="text", v-model="inputCode", class="form-control", v-if="isActive", placeholder="Confirmation Code")
+            button(class="btn btn-lg btn-primary btn-block", v-on:click="submitForm", v-if="isActive", type="button") Submit
             //- Maybe I should never use submitform, and do all the logic in the js? <- this is retarded, submitForm is a function
 
 

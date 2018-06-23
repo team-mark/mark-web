@@ -1,9 +1,13 @@
 Vue.component('mark-component', {
-    props: ['author', 'content'],
+    props: ['author', 'content', 'id'],
+    data: function () {
+        method
+    },
     template: '<div class="card bg-light mb-3" >' + 
                 '<div class="card-body">' +
                 '<h5 class="card-title">{{author}}</h5>' + 
                 '<p class="card-text">{{content}}</p>' +
+                '<button type="button" v-on:click="likePost">Like</button>' +
                 '</div></div>'
 })
 

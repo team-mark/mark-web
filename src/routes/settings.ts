@@ -7,9 +7,9 @@ router.get('/', index);
 
 // Route definitions
 function index(req: express.Request, res: express.Response, next: express.NextFunction): void {
-    res.render('signup', {
-        title: 'Mark Mobile Verification',
-        pageScript: 'signup',
-        pageStyle: 'signup'
+    res.render('settings', {
+        title: 'Mark Settings',
+        pageScript: 'settings',
+        pageStyle: 'settings'
     });
 }

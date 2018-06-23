@@ -5,6 +5,8 @@ block content
     body(class="text-center")
         #login
             form(class="form-signin")
+                h3 Don't have an account?
+                a(href="/signup") Register Here
                 h1 Please Sign In
                 label(for="inputUsername", class="sr-only") Email Address
                 input(type='text', v-model='inputUsername', class="form-control" placeholder='Username')
