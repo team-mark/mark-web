@@ -1,4 +1,5 @@
 import * as express from 'express';
+import { localconfig} from '../utils';
 const router = express.Router();
 module.exports = router;
 
@@ -10,6 +11,7 @@ function index(req: express.Request, res: express.Response, next: express.NextFu
     res.render('home', {
         title: 'Mark Home',
         pageScript: 'home',
-        pageStyle: 'home'
+        pageStyle: 'home',
+        environment: JSON.stringify(localconfig.getLocalConfig())
     });
 }

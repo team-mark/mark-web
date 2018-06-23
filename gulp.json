@@ -1,10 +1,11 @@
 {
     "src": [
         "index.js",
-        "src",
+        "src/**/*",
         "src/public/js/**/*.js",
         "src/public/pages/**/*.js",
-        "src/public/views/*.jade"
+        "src/public/views/**/*.jade",
+        "views/**/*.jade"
     ],
     "dest": "lib",
     "clean": [
