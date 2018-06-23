@@ -1,6 +1,6 @@
 const signup = new Vue({
     el: '#signup',
-    data: function() {
+    data: function () {
         return {
             response: "null",
             isActive: false, // Needs a better name, or more intuitive applicatoin
@@ -27,23 +27,23 @@ const signup = new Vue({
             this.hashing = false;
 
             this.$http.post("/account/signup",
-            {
-                handle: this.inputUsername,
-                phone: this.inputPassword,
-                passwordh: hash
+                {
+                    handle: this.inputUsername,
+                    phone: this.inputPassword,
+                    passwordh: hash
 
             }) // We still need to update key/roll/state
             .then(function (response) {
 
-                // get body data
-                this.response = response.body;
+                    // get body data
+                    this.response = response.body;
 
-            },
-            function (error) {
-                // error callback
-                console.log(error)
-                this.response = error;
-            });
+                },
+                    function (error) {
+                        // error callback
+                        console.log(error)
+                        this.response = error;
+                    });
 
             this.isActive = true;
         },

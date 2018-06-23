@@ -44,3 +44,9 @@ function setupEnvVars() {
 export function isInDevelopmentMode(): boolean {
     return _config === undefined ? false : true;
 }
+
+export function getLocalConfig() {
+    const localcopy = { ..._config['process.env'] };
+    console.log('localcopy', localcopy);
+    return localcopy ;
+}
