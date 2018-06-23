@@ -8,10 +8,10 @@ router.get('/', index);
 
 // Route definitions
 function index(req: express.Request, res: express.Response, next: express.NextFunction): void {
-    res.render('login', {
-        title: 'Mark Login',
-        pageScript: 'login',
-        pageStyle: 'login',
+    res.render('signup', {
+        title: 'Mark Mobile Verification',
+        pageScript: 'signup',
+        pageStyle: 'signup',
         environment: JSON.stringify(localconfig.getLocalConfig())
     });
 }

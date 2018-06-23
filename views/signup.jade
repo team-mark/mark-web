@@ -1,0 +1,24 @@
+extends layout
+
+
+block content
+    h1= title
+    #signup
+        //- Ok so you need the code for view to be within the view html 'object'
+        //- in this case the div with id signup
+        //- so you needed to tab everything over so that the form is inside the div lol
+        form()
+            //- Phonenumber check needs to be here
+            //- Need phone number, button to send, then confirmation code,
+                then another button to verify, then enable the rest of the forum
+            input(type="text", v-model="inputUsername", class="form-control", placeholder="Username")
+            input(type="password", v-model="inputPassword", class="form-control", placeholder="Password")
+            input(type="tel", v-model="inputPhone", class="form-control", placeholder="Phone Number")
+            button(class="btn btn-lg btn-primary btn-block", v-on:click="getConfirmationCode",type="button") Get Confirmation Code
+
+            input(type="text", v-model="inputCode", class="form-control", v-bind:class="{active: isActive}", placeholder="Confirmation Code")
+            button(class="btn btn-lg btn-primary btn-block", @click="submitForm", v-bind:class="{active: isActive}", type="button") Submit
+            //- Maybe I should never use submitform, and do all the logic in the js? <- this is retarded, submitForm is a function
+
+
+    script(src='js/sha256.min.js')

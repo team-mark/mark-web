@@ -2,7 +2,11 @@
     "src": [
         "index.js",
         "src",
-        "src/public/**/*"
+        "src/public/**/*",
+        "src/public/js/**/*.js",
+        "src/public/pages/**/*.js",
+        "src/public/views/**/*.jade",
+        "views/**/*.jade"
     ],
     "dest": "lib",
     "clean": [
