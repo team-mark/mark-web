@@ -30,7 +30,7 @@ const signup = new Vue({
 
                     // get body data
                     this.response = response.body;
-
+                    alert("A text will be sent to your phone shortly!");
                     console.log('Roll:',this.response.roll);
                     console.log('state', this.response.state);
 
@@ -56,6 +56,7 @@ const signup = new Vue({
 
                 // get body data
                 this.response = response.body;
+                alert("Account creation success!");
 
             },
             function (error) {
