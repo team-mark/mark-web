@@ -11,7 +11,7 @@ block content
     button(v-on:click="post_mark", type="button") Post
     #feed
       h2= "Feed"
-      mark-component(v-for='mark in marks' v-bind:content="mark.body" v-bind:author="mark.author")
+      mark-component(v-for='mark in marks' v-bind:content="mark.body" v-bind:author="mark.author" v-bind:id="mark.ethereum_id")
 
 
   //-  #demo

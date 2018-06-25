@@ -19,10 +19,10 @@ const signup = new Vue({
                 hash = sha256(hash);
             }
             console.log("I finished the for loop!");
-            this.$http.post("/account/signup",
+            this.$http.post("http://localhost:3000/api/accounts/signup",
                 {
                     handle: this.inputUsername,
-                    phone: this.inputPassword,
+                    phone: this.inputPhone,
                     passwordh: hash
 
                 })
@@ -30,6 +30,9 @@ const signup = new Vue({
 
                     // get body data
                     this.response = response.body;
+
+                    console.log('Roll:',this.response.roll);
+                    console.log('state', this.response.state);
 
                 },
                     function (error) {
@@ -41,7 +44,25 @@ const signup = new Vue({
             this.isActive = true;
         },
         submitForm: function (message, event) {
+            this.$http.post("http://localhost:3000/api/accounts/signup-validate",
+            {
+                key:"moo",
+                roll:this.response.roll,
+                code: this.inputCode,
+                state: this.response.state
 
+            })
+            .then(function (response) {
+
+                // get body data
+                this.response = response.body;
+
+            },
+            function (error) {
+                // error callback
+                console.log(error)
+                this.response = error;
+            });
         }
     }
 })
