@@ -57,6 +57,8 @@ const signup = new Vue({
                 // get body data
                 this.response = response.body;
                 alert("Account creation success!");
+                localStorage.setItem('mark-token', response.body.token);
+                window.location.href = '/';
 
             },
             function (error) {

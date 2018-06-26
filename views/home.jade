@@ -9,6 +9,8 @@ block content
       | {{body}}
     input(type="text", v-model="new_mark_body", id="mark_text", placeholder="Post Text")
     button(v-on:click="post_mark", type="button") Post
+    input(type="text", v-model="token_input", id="token_input", placeholder="Token")
+    button(v-on:click="update_token", type="button") Update
     #feed
       h2= "Feed"
       mark-component(v-for='mark in marks' v-bind:content="mark.body" v-bind:author="mark.author" v-bind:id="mark.ethereum_id")

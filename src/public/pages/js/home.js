@@ -7,9 +7,9 @@ Vue.component('mark-component', {
         '</div></div>'
 })
 
-
 const marksPath = '/api/marks';
 const marksEndpoint = MS_URL + marksPath;
+const TOKEN = 'mark-token';
 
 const app = new Vue({
     el: '#app',
@@ -19,92 +19,39 @@ const app = new Vue({
             body: null,
             marks: [],
             new_mark_body: null,
+            token_input: null,
         }
     },
     created: function () {
-        // this.loadBody();
+        axios.defaults.headers.common =  {'Authorization': localStorage.getItem(TOKEN)};
         this.loadFeed();
     },
     methods: {
-
-        // loadBody: function () {
-        //     // GET /someUrl
-        //     this.$http.get('http://dev-mark-services.azurewebsites.net/')
-        //         .then(function (response) {
-
-        //             // get body data
-        //             this.body = response.body;
-
-        //         },
-        //             function (error) {
-        //                 // error callback
-        //                 console.log(error);
-        //                 this.body = error;
-        //             });
-        // },
-
         loadFeed: function () {
-            this.$http.get(marksEndpoint)
-                .then(function (response) {
-                    this.marks = response.body;
+            axios.get(marksEndpoint)
+                .then(response => {
+                    console.log(response);
+                    this.marks = response.data;
+                    console.log(this.marks);
+                })
+                .catch(error => {
+                    console.log(error);
                 })
         },
 
         post_mark: function () {
-            console.log(this.new_mark_body);
-            this.$http.post(marksEndpoint, { body: this.new_mark_body })
-                .then(function (success) {
+            axios.post(marksEndpoint, { body: this.new_mark_body })
+                .then(success => {
                     this.loadFeed();
-                }, function (error) {
+                }, error => {
                     console.log(error.data);
                 });
+        },
+
+        update_token: function () {
+            localStorage.setItem(TOKEN, this.token_input);
+            Vue.http.headers.common['Authorization'] = {'Authorization': this.token_input};
         }
     }
 
 });
-
-// // var apiURL = 'https://api.github.com/repos/vuejs/vue/commits?per_page=3&sha='
-
-// /**
-//  * Actual demo
-//  */
-
-// // var demo = new Vue({
-
-// //     el: '#demo',
-
-// //     data: {
-// //         branches: ['master', 'dev'],
-// //         currentBranch: 'master',
-// //         commits: null
-// //     },
-
-
-// //     watch: {
-// //         currentBranch: 'fetchData'
-// //     },
-
-// //     filters: {
-// //         truncate: function (v) {
-// //             var newline = v.indexOf('\n')
-// //             return newline > 0 ? v.slice(0, newline) : v
-// //         },
-// //         formatDate: function (v) {
-// //             return v.replace(/T|Z/g, ' ')
-// //         }
-// //     },
-
-// //     methods: {
-// //         fetchData: function () {
-// //             var xhr = new XMLHttpRequest()
-// //             var self = this
-// //             xhr.open('GET', apiURL + self.currentBranch)
-// //             xhr.onload = function () {
-// //                 self.commits = JSON.parse(xhr.responseText)
-// //                 console.log(self.commits[0].html_url)
-// //             }
-// //             xhr.send()
-// //         }
-// //     }
-// // })
-
