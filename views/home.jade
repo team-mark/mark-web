@@ -13,7 +13,11 @@ block content
     button(v-on:click="update_token", type="button") Update
     #feed
       h2= "Feed"
-      mark-component(v-for='mark in marks' v-bind:content="mark.body" v-bind:author="mark.author" v-bind:id="mark.ethereum_id")
+      mark-component(v-for='mark in marks' 
+        v-on:like_mark="like_mark" 
+        v-bind:content="mark.body" 
+        v-bind:author="mark.author" 
+        v-bind:id="mark.ethereum_id")
 
 
   //-  #demo
