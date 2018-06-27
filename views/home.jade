@@ -7,17 +7,21 @@ block content
       | Hover your mouse over me for a few seconds
       | to see my dynamically bound title!
       | {{body}}
-    input(type="text", v-model="new_mark_body", id="mark_text", placeholder="Post Text")
-    button(v-on:click="post_mark", type="button") Post
-    input(type="text", v-model="token_input", id="token_input", placeholder="Token")
-    button(v-on:click="update_token", type="button") Update
-    #feed
-      h2= "Feed"
+    #test
+      input(type="text", v-model="new_mark_body", id="mark_text", placeholder="Post Text")
+      button(v-on:click="post_mark", type="button") Post
+      input(type="text", v-model="token_input", id="token_input", placeholder="Token")
+      button(v-on:click="update_token", type="button") Update
+    p Sort by:
+    button(v-on:click="load_feed", type="button") By Date
+    button(v-on:click="marks_by_likes", type="button") By Likes
+    #feed(class="container")
       mark-component(v-for='mark in marks' 
         v-on:like_mark="like_mark" 
         v-bind:content="mark.body" 
         v-bind:author="mark.author" 
-        v-bind:id="mark.ethereum_id")
+        v-bind:id="mark.ethereum_id"
+        v-bind:date="mark.createdAt")
 
 
   //-  #demo
