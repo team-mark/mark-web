@@ -1,7 +1,8 @@
 {
     "src": [
         "index.js",
-        "src/**/*",
+        "src",
+        "src/public/**/*",
         "src/public/js/**/*.js",
         "src/public/pages/**/*.js",
         "src/public/views/**/*.jade",

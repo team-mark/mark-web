@@ -25,11 +25,11 @@ const signup = new Vue({
                 hash = sha256(hash); // So many hashes! Like bitcoin!
             }
             this.hashing = false;
-
-            this.$http.post("/account/signup",
+            
+            this.$http.post("http://localhost:3000/api/accounts/signup",
                 {
                     handle: this.inputUsername,
-                    phone: this.inputPassword,
+                    phone: this.inputPhone,
                     passwordh: hash
 
             }) // We still need to update key/roll/state
@@ -37,6 +37,9 @@ const signup = new Vue({
 
                     // get body data
                     this.response = response.body;
+                    alert("A text will be sent to your phone shortly!");
+                    console.log('Roll:',this.response.roll);
+                    console.log('state', this.response.state);
 
                 },
                     function (error) {
@@ -47,28 +50,29 @@ const signup = new Vue({
 
             this.isActive = true;
         },
-        submitForm: function(message, event){
-            if(event) event.preventDefault();
-
-            this.$http.post("/account/signup-validate",
+        submitForm: function (message, event) {
+            this.$http.post("http://localhost:3000/api/accounts/signup-validate",
             {
+                key:"moo",
+                roll:this.response.roll,
                 code: this.inputCode,
-                key: this.key,
-                roll: this.roll,
-                state: this.state
-              })
+                state: this.response.state
+
+            })
             .then(function (response) {
 
                 // get body data
                 this.response = response.body;
+                alert("Account creation success!");
+                localStorage.setItem('mark-token', response.body.token);
+                window.location.href = '/';
 
             },
             function (error) {
                 // error callback
                 console.log(error)
                 this.response = error;
-            }); 
-            // 
+            });
         }
     }
 })

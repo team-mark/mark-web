@@ -1,6 +1,36 @@
-body {
+html {
+
+  font: 36px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+body, .body {
+  /* padding: 50px; */
+  padding: 0;
+}
+
+
+div.mainNav {
+  width: 100%;
+  height:280px;
+  margin: 0;
+  padding: 0;
+  background: gainsboro;
+}
+
+/* .mainNav .navWrapper {
+  background: gainsboro;
+  height: inherit;
+  width: inherit;
+  padding: 20px 40px;
+} */
+
+div.mainContent {
   padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+.navbar .searchWrapper {
+  margin: 0;
+  padding: 0;
 }
 
 a {
