@@ -8,20 +8,10 @@ block content
           h1.mb-4=title
       .row
         .col-lg-6
-          .card
-            .card-header
               .row
-                .col-3
-                  img(src="https://randomuser.me/api/portraits/men/74.jpg").d-block.rounded-circle.img-fluid
-                .col.d-flex.align-items-center.pl-0
-                  h5.mb-0 @ferrantejake
-            .card-body
-              p.card-text Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed metus lorem, semper eget erat in, aliquam imperdiet leo. Fusce ac ex et lectus euismod faucibus ac in ante. Nunc laoreet rutrum sagittis.
-            .card-footer.text-muted
-              .row(style="font-size:0.8rem")
-                .col-5
-                  p.mb-0.text-muted 5/12/18 8:03 pm
-                .col-4
-                  p.mb-0.text-muted 4,833 Likes
-                .col-3.text-right
-                  a(href="#") Like
+                 mark-component(v-for='mark in marks'  
+                    v-on:like_mark="like_mark"  
+                    v-bind:content="mark.body"  
+                    v-bind:author="mark.author"  
+                    v-bind:id="mark.ethereum_id" 
+                    v-bind:date="mark.createdAt")

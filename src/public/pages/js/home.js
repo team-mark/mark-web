@@ -4,7 +4,8 @@ Vue.component('mark-component', {
         return {
             likes: 0,
             imgsrc: null,
-            picture: false
+            picture: false,
+            profile_img: "https://img.buzzfeed.com/buzzfeed-static/static/2014-06/20/11/enhanced/webdr03/enhanced-28723-1403279311-6.jpg?downsize=715:*&output-format=auto&output-quality=auto"
         }
     },
     computed:{
@@ -29,17 +30,30 @@ Vue.component('mark-component', {
                     console.log(error.data);
                 });
     },
-    template:   `<div class="card border-dark mb-3">
+                                        // Set at 80% width for now
+                                        // needs css wizards help
+    template:   `<div class="card mx-auto mb-3" style="width:80vw">
                     <div class="card-header">
-                        <h6 align="left" class="card-title">{{author}}</h6>
-                        <small align="right">{{date}}</small>
+                        <div class="row">
+                        <div class="col-3"><img v-bind:src="profile_img" class="d-block rounded-circle img-fluid"></div>
+                        <div class="col d-flex align-items-center pl-0">
+                            <h5 class="mb-0">@{{author}}</h5>
+                        </div>
+                        </div>
                     </div>
                     <div class="card-body">
-                        <img v-if="picture" v-bind:src="imgsrc" alt="" />
+                        <img class="img-thumbnail" v-if="picture" v-bind:src="imgsrc" alt="" />
                         <p v-else class="card-text">{{content}}</p>
-                        <div class="container">
-                            <button v-on:click="$emit(\'like_mark\', id)">Like</button>
-                            <p>{{likes}}</p>
+                    </div>
+                    <div class="card-footer text-muted">
+                        <div style="font-size:0.8rem" class="row">
+                        <div class="col-5">
+                            <p class="mb-0 text-muted">{{date}}</p>
+                        </div>
+                        <div class="col-4">
+                            <p class="mb-0 text-muted">{{likes}} Likes</p>
+                        </div>
+                        <div class="col-3 text-right"><a href="#" v-on:click="$emit(\'like_mark\', id)">Like</a></div>
                         </div>
                     </div>
                 </div>`
@@ -49,7 +63,7 @@ const marksPath = '/api/marks';
 const marksEndpoint = MS_URL + marksPath;
 const LIKE_ENDPOINT = MS_URL + '/api/likes';
 const TOKEN = 'mark-token';
-const NUMBER_OF_MARKS = 10;
+const NUMBER_OF_MARKS = 20;
 
 const app = new Vue({
     el: '#app',
@@ -68,7 +82,7 @@ const app = new Vue({
     },
     methods: {
         load_feed: function () {
-            const query = '?sort=' + -1 + '&skip=' + 0 + '&size=' + NUMBER_OF_MARKS;
+            const query = '?sort=' + 1 + '&skip=' + 0 + '&limit=' + NUMBER_OF_MARKS;
             this.marks = [];
             axios.get(marksEndpoint + query)
                 .then(response => {
@@ -80,7 +94,7 @@ const app = new Vue({
         },
 
         marks_by_likes: function () {
-            const query = '?sort=' + -1 + '&skip=' + 0 + '&size=' + NUMBER_OF_MARKS;
+            const query = '?sort=' + -1 + '&skip=' + 0 + '&limit=' + NUMBER_OF_MARKS;
             this.marks = [];
 
             axios.get('http://localhost:3000/api/likes/sort' + query)
@@ -116,7 +130,7 @@ const app = new Vue({
         },
 
         like_mark: function(id) {
-            axios.post(LIKE_ENDPOINT, { postId: id })
+            axios.put(LIKE_ENDPOINT, { postId: id })
                 .then( response => {
                     console.log("Like added!");
                 }, error => {
