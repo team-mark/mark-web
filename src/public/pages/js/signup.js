@@ -1,3 +1,8 @@
+
+
+const signupEndpoint = MS_URL + '/api/accounts/signup'
+const validateEndpoint = MS_URL + '/api/accounts/signup-validate'
+
 const signup = new Vue({
     el: '#signup',
     data: function () {
@@ -11,15 +16,17 @@ const signup = new Vue({
         }
     }, methods: {
         getConfirmationCode: function (message, event) {
-            console.log("I'm doing something!");
+            console.log('get code start')
+            localStorage.setItem('mark-signup-active', response.state);
+
             if (event) event.preventDefault();
             var i;
             var hash = this.inputPassword;
             for (i = 0; i < 2000; i++) {
                 hash = sha256(hash);
             }
-            console.log("I finished the for loop!");
-            this.$http.post("/account/signup",
+
+            this.$http.post(signupEndpoint,
                 {
                     handle: this.inputUsername,
                     phone: this.inputPassword,
@@ -31,17 +38,47 @@ const signup = new Vue({
                     // get body data
                     this.response = response.body;
 
-                },
-                    function (error) {
-                        // error callback
-                        console.log(error)
-                        this.response = error;
-                    });
+                    localStorage.setItem('mark-signup-roll', response.roll);
+                    localStorage.setItem('mark-signup-state', response.state);
+                    console.log('roll/state saved');
+                    console.log('get code end')
+
+                }, function (error) {
+                    // error callback
+                    console.log(error)
+                    this.response = error;
+                });
 
             this.isActive = true;
         },
         submitForm: function (message, event) {
+            console.log('verify start')
 
+            this.$http.post(verifyEndpoint,
+                {
+                    handle: this.inputUsername,
+                    phone: this.inputPassword,
+                    passwordh: hash
+
+                })
+                .then(function (response) {
+
+                    // get body data
+                    this.response = response.body;
+
+                    localStorage.setItem('mark-signup-roll', response.roll);
+                    localStorage.setItem('mark-signup-state', response.state);
+                    console.log('roll/state saved');
+                    console.log('get code end')
+
+                }, function (error) {
+                    // error callback
+                    console.log(error)
+                    this.response = error;
+                });
+
+
+            console.log('verify end')
         }
     }
 })
