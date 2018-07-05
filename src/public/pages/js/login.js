@@ -1,8 +1,9 @@
+const loginEndpoint = MS_URL + '/api/accounts/login'
+
 const login = new Vue({
     el: '#login',
     data: function () {
         return {
-            response: "null",
             inputUsername: "",
             inputPassword: ""
         }
@@ -13,8 +14,6 @@ const login = new Vue({
 
             console.log('submit form')
 
-            const loginPath = '/api/accounts/login';
-            const loginEndpoint = MS_URL + loginPath;
 
             var hash = this.inputPassword;
             for (i = 0; i < 2000; i++) {
@@ -24,16 +23,20 @@ const login = new Vue({
             this.$http.post(loginEndpoint,
                 {
                     handle: this.inputUsername,
-                    password: hash,
+                    passwordh: hash,
                     key: hash,
                 })
                 .then(function (response) {
 
                     console.log('post response')
+                    console.log(response)
+                    this.response = response.body;
+
                     if (response.statusCode === 200) {
                         // get body data
-                        this.response = response.body;
-                        Vue.localStorage.set('mark-token', response.token);
+                        localStorage.set('mark-access-token', this.response.token);
+                        console.log('token saved');
+                        console.log('login end')
                     } else {
                         console.log('invalid login')
                         // window.location = '/login';
@@ -43,7 +46,6 @@ const login = new Vue({
                         console.log('post error')
                         // error callback
                         console.log(error)
-                        this.response = error;
                     });
         }
     }
