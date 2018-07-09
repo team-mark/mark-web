@@ -5,7 +5,7 @@ Vue.component('mark-component', {
             likes: 0,
             imgsrc: null,
             picture: false,
-            profile_img: "https://img.buzzfeed.com/buzzfeed-static/static/2014-06/20/11/enhanced/webdr03/enhanced-28723-1403279311-6.jpg?downsize=715:*&output-format=auto&output-quality=auto"
+            profile_img: "https://img.buzzfeed.com/buzzfeed-static/static/2014-06/20/11/enhanced/webdr03/enhanced-28723-1403279311-6.jpg"
         }
     },
     computed:{
@@ -86,10 +86,11 @@ const app = new Vue({
             this.marks = [];
             axios.get(marksEndpoint + query)
                 .then(response => {
+                    console.log(response);
                     this.marks = response.data;
                 })
                 .catch(error => {
-                    console.log(error);
+                    console.log(error.response);
                 })
         },
 
@@ -97,7 +98,7 @@ const app = new Vue({
             const query = '?sort=' + -1 + '&skip=' + 0 + '&limit=' + NUMBER_OF_MARKS;
             this.marks = [];
 
-            axios.get('http://localhost:3000/api/likes/sort' + query)
+            axios.get(MS_URL + '/api/likes/sort' + query)
                 .then(response => {
                     var postIds = [];
 

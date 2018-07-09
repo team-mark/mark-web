@@ -20,7 +20,7 @@ const login = new Vue({
                 hash = sha256(hash);
             }
 
-            this.$http.post(loginEndpoint,
+            axios.post(loginEndpoint,
                 {
                     handle: this.inputUsername,
                     passwordh: hash,
@@ -31,14 +31,17 @@ const login = new Vue({
                     console.log('post response')
                     console.log(response)
                     this.response = response.body;
+                    console.log("response status:" + response.status);
 
-                    if (response.statusCode === 200) {
+                    if (response.status == 200) {
                         // get body data
-                        localStorage.set('mark-access-token', this.response.token);
+                        localStorage.setItem('mark-access-token', response.data.token);
                         console.log('token saved');
                         console.log('login end')
+                        // redirect when finished
+                        window.location = '/';
                     } else {
-                        console.log('invalid login')
+                        console.log('invalid login');
                         // window.location = '/login';
                     }
                 },

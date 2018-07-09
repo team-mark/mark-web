@@ -1,28 +1,30 @@
 Vue.component('follower-component', {
-    props: ['followerName'],
-    template: '<a href="/users/{{followerName}}"><h3>{{followerName}}</h3><a>'
+    props: ['followername'],
+    template: '<h3>{{followername}}</h3>'
 })
 // HREF template is temporary is not an actual link (Yet! (?))
 
-const settings = new Vue({
-    el: '#settings',
+const followers = new Vue({
+    el: '#followers',
     data: function () {
         return {
             followersList: [],
         }
-    }, methods: {
+    },
+    created: function() {
+        this.loadFollowers();
+    },
+    methods: {
         loadFollowers: function (){
-            this.$http.get("/followers")
-            .then(function (response) {
-                this.followers = response;
-            },
-            function (error){
-                // error callback
-                console.log(error)
-                this.response = error;
-            })
+            axios.get(MS_URL + "/api/followers")
+                .then(response => {
+                    this.followersList = response.items;
+                })
+                .catch(error => {
+                    console.log(error.response);
+
+                    this.followersList = ["Tom","Jerry","Betty","Marcus"];
+                });
         }
-
     }
-
 });

@@ -21,7 +21,6 @@ const signup = new Vue({
         }
     }, methods: {
         getConfirmationCode: function (message, event) {
-            console.log('get code start')
 
             if (event) event.preventDefault();
             var i;
@@ -31,7 +30,7 @@ const signup = new Vue({
             }
             localStorage.setItem('mark-passwordh', hash);
 
-            this.$http.post(signupEndpoint,
+            axios.post(signupEndpoint,
                 {
                     handle: this.inputUsername,
                     phone: this.inputPhone,
@@ -39,6 +38,7 @@ const signup = new Vue({
 
             }) // We still need to update key/roll/state
             .then(function (response) {
+                console.log("Recieved response");
 
                     // get body data
                     this.response = response.body;
@@ -71,7 +71,7 @@ const signup = new Vue({
                 hash = sha256(hash);
             }
 
-            this.$http.post(validateEndpoint,
+            axios.post(validateEndpoint,
                 {
                     roll,
                     state,

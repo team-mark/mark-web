@@ -7,7 +7,6 @@
 
 
 // Application globals
-const { MS_URL } = environment;
 
 // Session
 const accessToken = localStorage.getItem('mark-access-token');
