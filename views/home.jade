@@ -1,7 +1,6 @@
 extends layout
 
 block content
-  h1= title
   #app
     span(v-bind:title='message')
       | Hover your mouse over me for a few seconds
@@ -15,13 +14,16 @@ block content
     p Sort by:
     button(v-on:click="load_feed", type="button") By Date
     button(v-on:click="marks_by_likes", type="button") By Likes
-    #feed(class="container")
-      mark-component(v-for='mark in marks' 
+    
+    
+    #feed.container
+     mark-component(v-for='mark in marks' 
         v-on:like_mark="like_mark" 
         v-bind:content="mark.body" 
         v-bind:author="mark.author" 
         v-bind:id="mark.ethereum_id"
         v-bind:date="mark.createdAt")
+     
 
 
   //-  #demo

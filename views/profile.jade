@@ -1,0 +1,62 @@
+title=title
+extends layout
+
+block content
+  #app
+    .container
+      .row
+        .col-lg-3
+          .card.mb-4
+            .card-header
+              h2.h4 Profile
+            .card-body
+              .row
+                .col-lg-12
+                  img(src="https://randomuser.me/api/portraits/men/74.jpg").d-block.rounded-circle.img-fluid.mx-auto.mb-4
+              .row
+                .col-lg-12.text-center
+                  h3.h5.mb-4 @ferrantejake
+              .row
+                .col-lg-12
+                  .card
+                    ul(style="font-size: 0.8rem").list-group.list-group-flush
+                      li.list-group-item.d-flex.align-items-center
+                        i.material-icons.text-primary.mr-2 person
+                        | Jake Ferrante
+                      li.list-group-item.d-flex.align-items-center
+                        i.material-icons.text-primary.mr-2 location_on
+                        | Orlando, FL
+                      li.list-group-item.d-flex.align-items-center
+                        i.material-icons.text-primary.mr-2 group_work
+                        | 3,284 Followers
+                      li.list-group-item.d-flex.align-items-center
+                        i.material-icons.text-primary.mr-2 chat_bubble
+                        | 2,184 Marks
+
+        .col-lg-9
+          .card
+            .card-header
+              ul.nav.nav-tabs.card-header-tabs
+                li.nav-item
+                  a(href="#").nav-link.active Marks
+                li.nav-item
+                  a(href="#").nav-link Remarks
+            .card-body
+              .col-lg-6.mx-auto
+                .card.mb-4
+                  .card-header
+                    .row
+                      .col-3
+                        img(src="https://randomuser.me/api/portraits/men/74.jpg").d-block.rounded-circle.img-fluid
+                      .col.d-flex.align-items-center.pl-0
+                        h5.mb-0 @ferrantejake
+                  .card-body
+                    p.card-text Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed metus lorem, semper eget erat in, aliquam imperdiet leo. Fusce ac ex et lectus euismod faucibus ac in ante. Nunc laoreet rutrum sagittis.
+                  .card-footer.text-muted
+                    .row(style="font-size:0.8rem")
+                      .col-5
+                        p.mb-0.text-muted 5/12/18 8:03 pm
+                      .col-4
+                        p.mb-0.text-muted 4,833 Likes
+                      .col-3.text-right
+                        a(href="#") Like
