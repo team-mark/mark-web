@@ -1,0 +1,55 @@
+doctype html
+//- html
+//-   head
+//-     title=title
+//-     link(rel='stylesheet', href='/stylesheets/bootstrap.css')
+//-     link(rel='stylesheet', href='/stylesheets/bootstrap-grid.css')
+//-     link(rel='stylesheet', href='/stylesheets/bootstrap-reboot.css')
+//-     link(rel='stylesheet', href='/stylesheets/style.css')
+//-     link(rel='stylesheet', href='/stylesheets/navbar.css')
+//-     link(rel='stylesheet', href='/pages/css/#{pageStyle}.css')
+//-   body
+//-     .main-nav 
+//-       nav.navbar.navbar-light.bg-light
+//-         a.navbar-brand Mark
+
+//-     //- main content   
+//-     div.mainContent
+//-       block content
+
+//-     script(src='https://unpkg.com/axios/dist/axios.min.js')
+//-     script(src="https://code.jquery.com/jquery-3.3.1.slim.min.js",
+//- 			  integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E=",
+//- 			  crossorigin="anonymous")
+//-     script(src='https://cdn.jsdelivr.net/npm/vue/dist/vue.js')
+//-     script(src='https://cdn.jsdelivr.net/npm/vue-resource@1.5.0')
+//-     script(src='/js/bootstrap.js')
+
+      
+//-     script(type='text/javascript').
+//-       let environment;
+//-       try {
+//-         environment = JSON.parse('!{environment}');
+//-         console.log('loading load', '!{environment}')
+//-         if (!environment) {
+//-           alert('Application environment not loaded!');
+//-         }
+//-       } catch(error) {
+//-           alert(error);
+//-       }
+
+//-     script(src='/js/main.js')
+//-     script(src='/pages/js/navbar.js')
+//-     script(src='/pages/js/#{pageScript}.js')
+
+doctype html
+html
+  include includes/head
+  body
+    include includes/loggedout/nav
+    block content
+
+  include includes/loggedout/footer
+
+  include includes/scripts
+

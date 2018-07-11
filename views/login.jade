@@ -1,16 +1,53 @@
-extends layout
+//- extends layoutLoggedOut
+
+//- block content
+//-   #login 
+//-     .container
+//-       .row
+//-         .col
+//-           h1.mb-4 Please Login
+//-       .row
+//-         .col-lg-4
+//-           form
+//-             .form-group
+//-               label(for="inputUsername").sr-only Email Address
+//-               input(type='email' v-model='inputUsername' placeholder='email@address.com').form-control
+//-             .form-group
+//-               label(for="inputPassword").sr-only Password
+//-               input(type="password" v-model="inputPassword" placeholder="Password").form-control
+//-            button(class="btn btn-lg btn-primary btn-block" v-on:click="submitForm" type="button") Sign in
+
+//-     //- title=title
+//-     //- body(class="text-center")
+//-     //-     #login
+//-     //-         form(class="form-signin")
+//-     //-             h1 Please Sign In
+//-     //-             label(for="inputUsername", class="sr-only") Email Address
+//-     //-             input(type='text', v-model='inputUsername', class="form-control" placeholder='Username')
+//-     //-             label(for = "inputPassword", class="sr-only") Password
+//-     //-             input(type="password", v-model="inputPassword", class="form-control", placeholder="Password")
+//-     //-             button(class="btn btn-lg btn-primary btn-block", v-on:click="submitForm", type="button") Sign in
+    
+    
+//-     script(src='js/sha256.min.js')
+
+
+extends layoutLoggedOut
 
 block content
-    title=title
-    body(class="text-center")
+  h1= title
+  .section
+    .row
+      .container
         #login
-            form(class="form-signin")
-                h1 Please Sign In
-                label(for="inputUsername", class="sr-only") Email Address
-                input(type='text', v-model='inputUsername', class="form-control" placeholder='Username')
-                label(for = "inputPassword", class="sr-only") Password
-                input(type="password", v-model="inputPassword", class="form-control", placeholder="Password")
-                button(class="btn btn-lg btn-primary btn-block", v-on:click="submitForm", type="button") Sign in
-    
-    
-    script(src='js/sha256.min.js')
+          form
+            .form-group
+              label(for="inputUsername").sr-only Email Address
+              input(type='email' v-model='inputUsername' placeholder='Username').form-control
+            .form-group
+              label(for="inputPassword").sr-only Password
+              input(type="password" v-model="inputPassword" placeholder="Password").form-control
+            button(class="btn btn-lg btn-primary btn-block" v-on:click="submitForm" type="button") Sign in
+
+          a.active(href='/signup') or Create Account
+  script(src='js/sha256.min.js')

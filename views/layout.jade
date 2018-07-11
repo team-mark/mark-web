@@ -1,97 +1,15 @@
 doctype html
-html
-  head
-    title=title
-    link(rel='stylesheet', href='/stylesheets/bootstrap.css')
-    link(rel='stylesheet', href='/stylesheets/bootstrap-grid.css')
-    link(rel='stylesheet', href='/stylesheets/bootstrap-reboot.css')
-    link(rel='stylesheet', href='/stylesheets/style.css')
-    link(rel='stylesheet', href='/pages/css/#{pageStyle}.css')
-    script(src='https://unpkg.com/axios/dist/axios.min.js')
+html  
+  include includes/head
   body
-
-
-    //- if user is not logged in   
-    //- header
-    //- div.mainNav
-    //-   div.navWrapper
-
-    //-     ul.nav.justify-content-end
-    //-       li.nav-item
-    //-         a.nav-link(href='/login') Login
-    //-       li.nav-item
-    //-         a.nav-link.active.btn.btn-primary(href='/signup') Signup
-
-
-
-        
-    //- nav.navbar.navbar-expand-lg.navbar-light.bg-light
-    //-   a.navbar-brand(href='/feed') Mark
-    //-   button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarSupportedContent', aria-controls='navbarSupportedContent', aria-expanded='false', aria-label='Toggle navigation')
-    //-     span.navbar-toggler-icon
-    //-   //- #navbarSupportedContent.collapse.navbar-collapse
-    //-   ul.navbar-nav.mr-auto
-    //-     li.nav-item.active
-    //-       a.nav-link(href='#')
-    //-         span.sr-only (current)
-    //-     li.nav-item
-    //-       a.nav-link(href='#') Link
-    //-     li.nav-item.dropdown
-    //-       a#navbarDropdown.nav-link.dropdown-toggle(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
-    //-       .dropdown-menu(aria-labelledby='navbarDropdown')
-    //-         a.dropdown-item(href='#') Action
-    //-         a.dropdown-item(href='#') Another action
-    //-         .dropdown-divider
-    //-         a.dropdown-item(href='#') Something else here
-    //-     li.nav-item
-    //-       a.nav-link.disabled(href='#') Disabled
-    //-   form.form-inline.my-2.my-lg-0
-    //-     input.form-control.mr-sm-2(type='search', placeholder='Search', aria-label='Search')
-    //-     button.btn.btn-outline-success.my-2.my-sm-0(type='submit') Search
-
-    .main-nav 
-      nav.navbar.navbar-light.bg-light
-        a.navbar-brand Navbar
-        ul.nav.justify-content-end
-          li.nav-item
-            a.nav-link(href='/login') Login
-          li.nav-item
-            a.nav-link.active.btn.btn-primary(href='/signup') Signup
-      nav.navbar.navbar-light.bg-light
-        form.searchWrapper.col-sm-12
-          input.form-control.mr-sm-2(type='search', placeholder='Search', aria-label='Search')
-
-
-        //- button.btn.btn-outline-success.my-2.my-sm-0(type='submit') Search
-        
-    //- if user is logged in
-    //- show main nav bar
+    include includes/nav
 
     //- main content   
-    div.mainContent
-      block content
-
-    script(src="https://code.jquery.com/jquery-3.3.1.slim.min.js",
-			  integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E=",
-			  crossorigin="anonymous")
-    script(src='https://cdn.jsdelivr.net/npm/vue/dist/vue.js')
-    script(src='https://cdn.jsdelivr.net/npm/vue-resource@1.5.0')
-    script(src='/js/bootstrap.js')
-
-      
-    script(type='text/javascript').
-      let environment;
-      try {
-        environment = JSON.parse('!{environment}');
-        console.log('loading load', '!{environment}')
-        if (!environment) {
-          alert('Application environment not loaded!');
-        }
-      } catch(error) {
-          alert(error);
-      }
-
-    script(src='/js/main.js')
-    script(src='/js/localstorage.js')
-    script(src='/pages/js/#{pageScript}.js')
+    block content
+    
+    //- supporting content
+    include includes/post-mark
+    
+    include includes/footer 
+  include includes/scripts
 

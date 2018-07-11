@@ -1,0 +1,11 @@
+#exampleModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+  .modal-dialog(role='document')
+    #post-mark.modal-content
+      .modal-header
+        h5#exampleModalLabel.modal-title New Mark
+        button.close(type='button', data-dismiss='modal', aria-label='Close')
+          span(aria-hidden='true') &times;
+      .modal-body
+        textarea(type="text", id="postBody" v-model='postBody' , placeholder="Make your mark...")
+      .modal-footer
+        button.btn.btn-primary( v-on:click="post", type='button') Share

@@ -46,6 +46,14 @@ const signup = new Vue({
                     console.log('roll/state saved');
                     console.log('get code end')
 
+                    $('#inputUsername').prop('disabled', true);
+                    $('#input').prop('disabled', true);
+                    $('#inputUsername').prop('disabled', true);
+                    $('#confirmationButton').prop('disabled', true);
+
+                    $('#inputCode').prop('disabled', false);
+                    $('#createAccountButton').prop('disabled', false);
+
                 }, function (error) {
                     // error callback
                     console.log(error)
@@ -82,6 +90,8 @@ const signup = new Vue({
 
 
                     localStorage.setItem('mark-access-token', this.response.token);
+                    localStorage.removeItem('mark-signup-roll');
+                    localStorage.removeItem('mark-signup-state');
                     console.log('token saved');
                     console.log('get token end')
                     window.location = '/';

@@ -1,34 +1,24 @@
-const loginEndpoint = MS_URL + '/api/accounts/login'
+const markEndpoint = MS_URL + '/api/marks'
 
-const login = new Vue({
-    el: '#login',
+const hash = localStorage.getItem('mark-passwordh')
+
+const postMark = new Vue({
+    el: '#post-mark',
     data: function () {
         return {
-            inputUsername: "",
-            inputPassword: ""
+            postBody: "",
         }
     },
     methods: {
-        submitForm: function (message, event) {
-            console.log('submit form')
-            if (event) event.preventDefault();
-
-            console.log('submit form')
+        post: function (message, event) {
 
 
-            var hash = this.inputPassword;
-            for (i = 0; i < 2000; i++) {
-                hash = sha256(hash);
+            const requestBody = {
+                body: this.postBody,
+                passwordh: hash,
             }
-
-
-
-            this.$http.post(loginEndpoint,
-                {
-                    handle: this.inputUsername,
-                    passwordh: hash,
-                    key: hash,
-                })
+            console.log('submit mark', requestBody)
+            this.$http.post(markEndpoint, requestBody)
                 .then(function (response) {
 
                     console.log('post response')
@@ -38,7 +28,6 @@ const login = new Vue({
                     if (response.status === 200) {
                         // get body data
                         localStorage.setItem('mark-access-token', this.response.token);
-                        localStorage.setItem('mark-passwordh', hash);
                         console.log('token saved');
                         console.log('login end')
                         window.location = '/';

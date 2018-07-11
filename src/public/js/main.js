@@ -9,11 +9,15 @@
 // Application globals
 const { MS_URL } = environment;
 
-// Session
+// Session controls
 const accessToken = localStorage.getItem('mark-access-token');
+const isLoggedIn = !!accessToken;
 
-if (!accessToken) {
-    // if (!accessToken && window.location !== '/login') {
+if (!isLoggedIn && !(window.location.pathname === '/signup' || window.location.pathname === '/login')) {
     console.log(window.location) // = '/login'
-    // window.location = '/login'
+    window.location = '/login'
 }
+
+// Load default request settings
+Vue.http.headers.common['Authorization'] = accessToken;
+Vue.http.headers.common['Content-Type'] = 'application/json';
