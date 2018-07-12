@@ -1,3 +1,4 @@
 lib
 node_modules
 localconfig.json
+.DS_Store

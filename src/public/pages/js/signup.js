@@ -12,28 +12,31 @@ const signup = new Vue({
             inputUsername: "",
             inputPassword: "",
             inputPhone: "",
-            inputCode: ""
+            inputCode: "",
+            value: 0,
+            max: 2000,
+            key: 0, // key, roll, and state may not be of the correct datatype currently
+            roll: 0,
+            state: 0
         }
     }, methods: {
         getConfirmationCode: function (message, event) {
-            console.log('get code start')
 
             if (event) event.preventDefault();
-            var i;
-            var hash = this.inputPassword;
-            for (i = 0; i < 2000; i++) {
-                hash = sha256(hash);
-            }
+
+            var hash = hashPassword(this.inputPassword);
+
             localStorage.setItem('mark-passwordh', hash);
 
-            this.$http.post(signupEndpoint,
+            axios.post(signupEndpoint,
                 {
                     handle: this.inputUsername,
                     phone: this.inputPhone,
                     passwordh: hash
 
-                })
-                .then(function (response) {
+            }) // We still need to update key/roll/state
+            .then(function (response) {
+                console.log("Recieved response");
 
                     // get body data
                     this.response = response.body;
@@ -69,12 +72,9 @@ const signup = new Vue({
             const state = localStorage.getItem('mark-signup-state');
             const code = this.inputCode;
 
-            var hash = this.inputPassword;
-            for (i = 0; i < 2000; i++) {
-                hash = sha256(hash);
-            }
+            var hash = hashPassword(this.inputPassword);
 
-            this.$http.post(validateEndpoint,
+            axios.post(validateEndpoint,
                 {
                     roll,
                     state,

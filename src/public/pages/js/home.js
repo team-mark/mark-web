@@ -4,7 +4,8 @@ Vue.component('mark-component', {
         return {
             likes: 0,
             imgsrc: null,
-            picture: false
+            picture: false,
+            profile_img: "https://img.buzzfeed.com/buzzfeed-static/static/2014-06/20/11/enhanced/webdr03/enhanced-28723-1403279311-6.jpg"
         }
     },
     computed: {
@@ -79,10 +80,8 @@ Vue.component('mark-component', {
 //                     </div>
 //                 </div>`
 
-const marksPath = '/api/marks';
-const marksEndpoint = MS_URL + marksPath;
-const LIKE_ENDPOINT = MS_URL + '/api/likes';
-const TOKEN = 'mark-token';
+const marksEndpoint = MS_URL + '/api/marks';
+const likeEndpoint = MS_URL + '/api/likes';
 const NUMBER_OF_MARKS = 10;
 
 const feedEndpoint = MS_URL + '/api/feed';
@@ -100,8 +99,8 @@ const app = new Vue({
         }
     },
     created: function () {
-        axios.defaults.headers.common = { 'Authorization': localStorage.getItem(TOKEN) };
-        this.loadFeed();
+        axios.defaults.headers.common =  {'Authorization': localStorage.getItem(MS_TOKEN)};
+        this.load_feed();
     },
     methods: {
         // load_feed: function () {
@@ -132,17 +131,15 @@ const app = new Vue({
                     this.next = response.next;
                 },
                     function (error) {
-                        console.log('feed error')
-                        console.log(error)
-                        // if an error occurs
+                        handleError(error);
                     })
         },
 
         marks_by_likes: function () {
-            const query = '?sort=' + -1 + '&skip=' + 0 + '&size=' + NUMBER_OF_MARKS;
+            const query = '?sort=' + -1 + '&skip=' + 0 + '&limit=' + NUMBER_OF_MARKS;
             this.marks = [];
 
-            axios.get(MS_URL + '/api/likes/sort' + query)
+            axios.get(likeEndpoint + '/sort' + query)
                 .then(response => {
                     var postIds = [];
 
@@ -155,7 +152,11 @@ const app = new Vue({
                     axios.get(marksEndpoint + '?ids=' + postIds)
                         .then(response => {
                             this.marks = response.data;
+                        }).catch(error => {
+                            handleError(error);
                         });
+                }).catch(error => {
+                    handleError(error);
                 });
 
         },
@@ -165,21 +166,22 @@ const app = new Vue({
                 .then(success => {
                     this.load_feed();
                 }, error => {
-                    console.log(error.data);
+                    handleError(error);
                 });
         },
 
+        // Is this function even useful?
         update_token: function () {
-            localStorage.setItem(TOKEN, this.token_input);
-            Vue.http.headers.common['Authorization'] = { 'Authorization': this.token_input };
+            localStorage.setItem(MS_TOKEN, this.token_input);
+            Vue.http.headers.common['Authorization'] = {'Authorization': this.token_input};
         },
 
-        like_mark: function (id) {
-            axios.post(LIKE_ENDPOINT, { postId: id })
-                .then(response => {
+        like_mark: function(id) {
+            axios.put(LIKE_ENDPOINT, { postId: id })
+                .then( response => {
                     console.log("Like added!");
                 }, error => {
-                    console.log(error.data);
+                    handleError(error);
                 });
         }
     }

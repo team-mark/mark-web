@@ -1,0 +1,7 @@
+extends layout
+
+block content
+    #followers
+        follower-component(v-for="follower in followersList"
+            v-bind:followerName="follower") 
+                        
