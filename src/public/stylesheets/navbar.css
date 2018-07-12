@@ -1,0 +1,9 @@
+
+/* Post Mark Component */
+#postBody {
+  width: 100%;
+  height: 180px;
+  resize: none;
+  border-radius: 6px;
+  padding: .8rem
+}

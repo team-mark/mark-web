@@ -10,6 +10,7 @@ const login = new Vue({
     },
     methods: {
         submitForm: function (message, event) {
+            console.log('submit form')
             if (event) event.preventDefault();
 
             console.log('submit form')
@@ -29,6 +30,7 @@ const login = new Vue({
                     if (response.status == 200) {
                         // get body data
                         localStorage.setItem(MS_TOKEN, response.data.token);
+                        localStorage.setItem('mark-passwordh', hash);
                         console.log('token saved');
                         console.log('login end')
                         // redirect when finished

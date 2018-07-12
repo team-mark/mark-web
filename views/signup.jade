@@ -1,26 +1,19 @@
-title=title
-extends layout
+extends layoutLoggedOut
 
 block content
-  .container
+  h1= title
+  .section
     .row
-      .col
-        h1.mb-4 Sign Up
-    .row
-      .col-lg-4
+      .container
         #signup
-          form
+
+          form()
+            .form-group 
+              input(type="text", v-model="inputUsername" id="inputUsername", class="form-control", placeholder="Username").form-control
+              input(type="password", v-model="inputPassword" id="inputPassword", class="form-control", placeholder="Password").form-control
+              input(type="tel", v-model="inputPhone" id="inputPhone", class="form-control", placeholder="Phone Number").form-control
+              button(id="confirmationButton" class="btn btn-lg btn-primary btn-block", v-on:click="getConfirmationCode",type="button") Get Confirmation Code
             .form-group
-              label(for="inputUsername").sr-only Email Address
-              input(type='email' v-model='inputUsername' placeholder='email@address.com').form-control
-            .form-group
-              label(for="inputPassword").sr-only Password
-              input(type="password" v-model="inputPassword" placeholder="Password").form-control
-            .form-group
-              label(for="inputPhone").sr-only Phone Number
-              input(type="tel" v-model="inputPhone" placeholder="(407) 123-4567").form-control
-            button(class="btn btn-lg btn-primary btn-block" v-on:click="getConfirmationCode" type="button").form-group Send Verification Code   
-            .form-group
-              label(for="inputCode").sr-only Confirmation Code
-              input(type="text" v-model="inputCode" v-bind:class="{active: isActive}" placeholder="Confirmation Code").form-control
-            button(class="btn btn-lg btn-primary btn-block" @click="submitForm" v-bind:class="{active: isActive}" type="button") Sign Up
+              input(disabled id="inputCode" type="text", v-model="inputCode", class="form-control", v-bind:class="{active: isActive}", placeholder="Confirmation Code")
+              button(disabled id="createAccountButton" class="btn btn-lg btn-primary btn-block", v-on:click="submitForm", v-bind:class="{active: isActive}", type="button") Submit
+            a.active(href='/login') or Login
