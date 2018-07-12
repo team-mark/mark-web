@@ -24,5 +24,3 @@ block content
               label(for="inputCode").sr-only Confirmation Code
               input(type="text" v-model="inputCode" v-bind:class="{active: isActive}" placeholder="Confirmation Code").form-control
             button(class="btn btn-lg btn-primary btn-block" @click="submitForm" v-bind:class="{active: isActive}" type="button") Sign Up
-
-    script(src='js/sha256.min.js')

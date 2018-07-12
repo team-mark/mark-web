@@ -59,10 +59,8 @@ Vue.component('mark-component', {
                 </div>`
 })
 
-const marksPath = '/api/marks';
-const marksEndpoint = MS_URL + marksPath;
-const LIKE_ENDPOINT = MS_URL + '/api/likes';
-const TOKEN = 'mark-token';
+const marksEndpoint = MS_URL + '/api/marks';
+const likeEndpoint = MS_URL + '/api/likes';
 const NUMBER_OF_MARKS = 20;
 
 const app = new Vue({
@@ -77,7 +75,7 @@ const app = new Vue({
         }
     },
     created: function () {
-        axios.defaults.headers.common =  {'Authorization': localStorage.getItem(TOKEN)};
+        axios.defaults.headers.common =  {'Authorization': localStorage.getItem(MS_TOKEN)};
         this.load_feed();
     },
     methods: {
@@ -90,7 +88,7 @@ const app = new Vue({
                     this.marks = response.data;
                 })
                 .catch(error => {
-                    console.log(error.response);
+                    handleError(error);
                 })
         },
 
@@ -98,7 +96,7 @@ const app = new Vue({
             const query = '?sort=' + -1 + '&skip=' + 0 + '&limit=' + NUMBER_OF_MARKS;
             this.marks = [];
 
-            axios.get(MS_URL + '/api/likes/sort' + query)
+            axios.get(likeEndpoint + '/sort' + query)
                 .then(response => {
                     var postIds = [];
 
@@ -111,7 +109,11 @@ const app = new Vue({
                     axios.get(marksEndpoint + '?ids=' + postIds)
                         .then(response => {
                             this.marks = response.data;
+                        }).catch(error => {
+                            handleError(error);
                         });
+                }).catch(error => {
+                    handleError(error);
                 });
             
         },
@@ -121,12 +123,13 @@ const app = new Vue({
                 .then(success => {
                     this.load_feed();
                 }, error => {
-                    console.log(error.data);
+                    handleError(error);
                 });
         },
 
+        // Is this function even useful?
         update_token: function () {
-            localStorage.setItem(TOKEN, this.token_input);
+            localStorage.setItem(MS_TOKEN, this.token_input);
             Vue.http.headers.common['Authorization'] = {'Authorization': this.token_input};
         },
 

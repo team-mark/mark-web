@@ -23,11 +23,9 @@ const signup = new Vue({
         getConfirmationCode: function (message, event) {
 
             if (event) event.preventDefault();
-            var i;
-            var hash = this.inputPassword;
-            for (value = 0; value < 2000; value++){ // Magic number, TODO: figure out exactly how many we need, maybe make this loop better
-                hash = sha256(hash); // So many hashes! Like bitcoin!
-            }
+
+            var hash = hashPassword(this.inputPassword);
+
             localStorage.setItem('mark-passwordh', hash);
 
             axios.post(signupEndpoint,
@@ -66,10 +64,7 @@ const signup = new Vue({
             const state = localStorage.getItem('mark-signup-state');
             const code = this.inputCode;
 
-            var hash = this.inputPassword;
-            for (i = 0; i < 2000; i++) {
-                hash = sha256(hash);
-            }
+            var hash = hashPassword(this.inputPassword);
 
             axios.post(validateEndpoint,
                 {

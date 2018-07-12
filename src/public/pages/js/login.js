@@ -15,10 +15,7 @@ const login = new Vue({
             console.log('submit form')
 
 
-            var hash = this.inputPassword;
-            for (i = 0; i < 2000; i++) {
-                hash = sha256(hash);
-            }
+            var hash = hashPassword(this.inputPassword);
 
             axios.post(loginEndpoint,
                 {
@@ -28,27 +25,21 @@ const login = new Vue({
                 })
                 .then(function (response) {
 
-                    console.log('post response')
-                    console.log(response)
-                    this.response = response.body;
-                    console.log("response status:" + response.status);
 
                     if (response.status == 200) {
                         // get body data
-                        localStorage.setItem('mark-access-token', response.data.token);
+                        localStorage.setItem(MS_TOKEN, response.data.token);
                         console.log('token saved');
                         console.log('login end')
                         // redirect when finished
                         window.location = '/';
                     } else {
-                        console.log('invalid login');
+                        alert('invalid login');
                         // window.location = '/login';
                     }
                 },
                     function (error) {
-                        console.log('post error')
-                        // error callback
-                        console.log(error)
+                        handleError(error);
                     });
         }
     }
