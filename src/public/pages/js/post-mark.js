@@ -27,7 +27,7 @@ const postMark = new Vue({
 
                     if (response.status === 200) {
                         // get body data
-                        localStorage.setItem('mark-access-token', this.response.token);
+                        localStorage.setItem(MS_TOKEN_KEY, this.response.token);
                         console.log('token saved');
                         console.log('login end')
                         window.location = '/';

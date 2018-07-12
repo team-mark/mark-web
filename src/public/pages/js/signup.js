@@ -28,18 +28,19 @@ const signup = new Vue({
 
             localStorage.setItem('mark-passwordh', hash);
 
-            axios.post(signupEndpoint,
-                {
-                    handle: this.inputUsername,
-                    phone: this.inputPhone,
-                    passwordh: hash
+            this.$http.post(signupEndpoint, {
+                handle: this.inputUsername,
+                phone: this.inputPhone,
+                passwordh: hash
 
             }) // We still need to update key/roll/state
-            .then(function (response) {
-                console.log("Recieved response");
+                .then(function (response) {
+                    console.log("Recieved response");
+                    console.log(response);
 
                     // get body data
                     this.response = response.body;
+
                     alert("A text will be sent to your phone shortly!");
                     console.log('Roll:', this.response.roll);
                     console.log('state', this.response.state);
@@ -74,22 +75,20 @@ const signup = new Vue({
 
             var hash = hashPassword(this.inputPassword);
 
-            axios.post(validateEndpoint,
-                {
-                    roll,
-                    state,
-                    code,
-                    key: hash
+            this.$http.post(validateEndpoint, {
+                roll,
+                state,
+                code,
+                key: hash
 
-                })
+            })
                 .then(function (response) {
 
                     // get body data
                     this.response = response.body;
                     console.log(response)
 
-
-                    localStorage.setItem('mark-access-token', this.response.token);
+                    localStorage.setItem(MS_TOKEN_KEY, this.response.token);
                     localStorage.removeItem('mark-signup-roll');
                     localStorage.removeItem('mark-signup-state');
                     console.log('token saved');
@@ -100,7 +99,6 @@ const signup = new Vue({
                     // error callback
                     console.log(error)
                 });
-
 
             this.isActive = false;
         }

@@ -15,7 +15,7 @@ const app = new Vue({
         // postMark: function () {
         //     const query = '?sort=' + -1 + '&skip=' + 0 + '&size=' + NUMBER_OF_MARKS;
         //     this.marks = [];
-        //     axios.get(marksEndpoint + query)
+        //     this.$http.get(marksEndpoint + query)
         //         .then(response => {
         //             this.marks = response.data;
         //         })
@@ -28,7 +28,7 @@ const app = new Vue({
         //     const query = '?sort=' + -1 + '&skip=' + 0 + '&size=' + NUMBER_OF_MARKS;
         //     this.marks = [];
 
-        //     axios.get('http://localhost:3000/api/likes/sort' + query)
+        //     this.$http.get('http://localhost:3000/api/likes/sort' + query)
         //         .then(response => {
         //             var postIds = [];
 
@@ -38,7 +38,7 @@ const app = new Vue({
 
         //             postIds = JSON.stringify(postIds);
 
-        //             axios.get(marksEndpoint + '?ids=' + postIds)
+        //             this.$http.get(marksEndpoint + '?ids=' + postIds)
         //                 .then(response => {
         //                     this.marks = response.data;
         //                 });
@@ -47,7 +47,7 @@ const app = new Vue({
         // },
 
         // post_mark: function () {
-        //     axios.post(marksEndpoint, { body: this.new_mark_body })
+        //     this.$http.post(marksEndpoint, { body: this.new_mark_body })
         //         .then(success => {
         //             this.load_feed();
         //         }, error => {
@@ -61,7 +61,7 @@ const app = new Vue({
         // },
 
         // like_mark: function (id) {
-        //     axios.post(LIKE_ENDPOINT, { postId: id })
+        //     this.$http.post(LIKE_ENDPOINT, { postId: id })
         //         .then(response => {
         //             console.log("Like added!");
         //         }, error => {

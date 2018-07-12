@@ -16,7 +16,7 @@ const logout = new Vue({
 
                     if (response.status === 200) {
                         // get body data
-                        localStorage.removeItem('mark-access-token', this.response.token);
+                        localStorage.removeItem(MS_TOKEN_KEY, this.response.token);
                         console.log('logout end')
                         window.location = '/login';
                     } else {
