@@ -23,7 +23,7 @@ Vue.component('mark-component', {
             this.picture = true;
         }
 
-        axios.get(LIKE_ENDPOINT + '/' + this.post_id)
+        this.$http.get(LIKE_ENDPOINT + '/' + this.post_id)
             .then(response => {
                 this.likes = response.data.length
             }, error => {
@@ -99,14 +99,13 @@ const app = new Vue({
         }
     },
     created: function () {
-        axios.defaults.headers.common =  {'Authorization': localStorage.getItem(MS_TOKEN)};
-        this.load_feed();
+        this.loadFeed();
     },
     methods: {
         // load_feed: function () {
         //     const query = '?sort=' + -1 + '&skip=' + 0 + '&size=' + NUMBER_OF_MARKS;
         //     this.marks = [];
-        //     axios.get(marksEndpoint + query)
+        //     this.$http.get(marksEndpoint + query)
         //         .then(response => {
         //             this.marks = response.data;
         //         })
@@ -139,7 +138,8 @@ const app = new Vue({
             const query = '?sort=' + -1 + '&skip=' + 0 + '&limit=' + NUMBER_OF_MARKS;
             this.marks = [];
 
-            axios.get(likeEndpoint + '/sort' + query)
+
+            this.$http.get(likeEndpoint + '/sort' + query)
                 .then(response => {
                     var postIds = [];
 
@@ -149,7 +149,7 @@ const app = new Vue({
 
                     postIds = JSON.stringify(postIds);
 
-                    axios.get(marksEndpoint + '?ids=' + postIds)
+                    this.$http.get(marksEndpoint + '?ids=' + postIds)
                         .then(response => {
                             this.marks = response.data;
                         }).catch(error => {
@@ -162,7 +162,7 @@ const app = new Vue({
         },
 
         post_mark: function () {
-            axios.post(marksEndpoint, { body: this.new_mark_body })
+            this.$http.post(marksEndpoint, { body: this.new_mark_body })
                 .then(success => {
                     this.load_feed();
                 }, error => {
@@ -170,15 +170,9 @@ const app = new Vue({
                 });
         },
 
-        // Is this function even useful?
-        update_token: function () {
-            localStorage.setItem(MS_TOKEN, this.token_input);
-            Vue.http.headers.common['Authorization'] = {'Authorization': this.token_input};
-        },
-
-        like_mark: function(id) {
-            axios.put(LIKE_ENDPOINT, { postId: id })
-                .then( response => {
+        like_mark: function (id) {
+            this.$http.put(LIKE_ENDPOINT, { postId: id })
+                .then(response => {
                     console.log("Like added!");
                 }, error => {
                     handleError(error);

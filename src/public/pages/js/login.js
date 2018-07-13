@@ -18,18 +18,17 @@ const login = new Vue({
 
             var hash = hashPassword(this.inputPassword);
 
-            axios.post(loginEndpoint,
-                {
-                    handle: this.inputUsername,
-                    passwordh: hash,
-                    key: hash,
-                })
+            this.$http.post(loginEndpoint, {
+                handle: this.inputUsername,
+                passwordh: hash,
+                key: hash,
+            })
                 .then(function (response) {
 
 
                     if (response.status == 200) {
                         // get body data
-                        localStorage.setItem(MS_TOKEN, response.data.token);
+                        localStorage.setItem(MS_TOKEN_KEY, response.data.token);
                         localStorage.setItem('mark-passwordh', hash);
                         console.log('token saved');
                         console.log('login end')

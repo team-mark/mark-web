@@ -28,7 +28,7 @@ const followers = new Vue({
     },
     methods: {
         loadFollowers: function (){
-            axios.get(MS_URL + "/api/followers")
+            this.$http.get(MS_URL + "/api/followers")
                 .then(response => {
                     this.followersList = response.items;
                 })

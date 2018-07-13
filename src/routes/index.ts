@@ -11,7 +11,6 @@ const settings = require('./settings');
 const followers = require('./followers');
 // const following = require('/following');
 // const users = require(`./users`);
-// const account = require(`./account`);
 
 router.use('/', home);
 router.use('/login', login);
