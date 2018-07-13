@@ -30,34 +30,32 @@ Vue.component('mark-component', {
                 console.log(error.data);
             });
     },
-    // template: `<div class="row">
-    //     <div class="col-lg-6" v-for="(mark, index) in marks">
-    //         <div class="card">
-    //             <div class="card-header">
-    //                 <div class="row">
-    //                 <div class="col-3"><img class="d-block rounded-circle img-fluid" src="https://randomuser.me/api/portraits/men/74.jpg"/></div>
-    //                 <div class="col d-flex align-items-center pl-0">
-    //                     <h5 class="mb-0">@{{ handle }}</h5>
-    //                 </div>   
-    //                 </div>
-    //             </div>
-    //             <div class="card-body">
-    //                 <p class="card-text">{{ body }}</p>
-    //             </div>
-    //             <div class="card-footer text-muted">
-    //                 <div class="row" style="font-size:0.8rem">
-    //                 <div class="col-5">
-    //                     <p class="mb-0 text-muted">{{ createdAt }}</p>
-    //                 </div>
-    //                 <div class="col-4">
-    //                     <p class="mb-0 text-muted">4,833 Likes</p>
-    //                 </div>
-    //                 <div class="col-3 text-right"><a href="#">Like</a></div>
-    //                 </div>
-    //             </div>
-    //         </div>
-    //     </div>
-    // </div>`
+    template: `<div class="container" id="feed">
+        <div class="card">
+        <div class="card-header">
+            <div class="row">
+            <div class="col-2"><img class="d-block rounded-circle img-fluid" src="https://randomuser.me/api/portraits/men/74.jpg"/></div>
+            <div class="col d-flex align-items-center pl-0">
+                <h5 class="card-title">@{{ mark.owner }}</h5>
+            </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <p class="card-text">{{ mark.body }}</p>
+        </div>
+        <div class="card-footer text-muted">
+            <div class="row" style="font-size:0.8rem">
+            <div class="col-5">
+                <p class="mb-0 text-muted">{{ mark.createdAt }}</p>
+            </div>
+            <div class="col-4">
+                <p class="mb-0 text-muted">326 likes</p>
+            </div>
+            <div class="col-3 text-right"><a href="#">Like</a></div>
+            </div>
+        </div>
+        </div>
+        </div>`
 })
 
 // `<div class="card border-dark mb-3">
@@ -86,11 +84,7 @@ const feed = new Vue({
     el: '#feed',
     data: function () {
         return {
-            message: null,
-            body: null,
-            marks: [],
-            new_mark_body: null,
-            token_input: null,
+            marks: [{}],
         }
     },
     created: function () {

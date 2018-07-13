@@ -14,26 +14,33 @@ block content
     //-     v-bind:id="mark.ethereum_id"
     //-     v-bind:date="mark.createdAt")
 
-  #feed(class="container")
-    .row(v-for='mark in marks')
-      //- .col-lg-6(v-for='mark in marks')
-      .card
-        .card-header
-          .row
-            .col-2
-              img.d-block.rounded-circle.img-fluid(src='https://randomuser.me/api/portraits/men/74.jpg')
-            .col.d-flex.align-items-center.pl-0
-              h5.card-title @{{ mark.owner }}
-        .card-body
-          p.card-text {{ mark.body }}
-        .card-footer.text-muted
-          .row(style='font-size:0.8rem')
-            .col-5
-              p.mb-0.text-muted {{ mark.createdAt }}
-            .col-4
-              p.mb-0.text-muted 326 likes
-            .col-3.text-right
-              a(href='#') Like
+  .section.search-wrapper
+    .row
+      form#search.searchWrapper.col-sm-12
+        input.form-control.mr-sm-2(type='search', placeholder='Search', aria-label='Search' v-model="searchInput" v-on:submit="search")
+  .section.feed-spacer
+  .section.feed-content
+    .row
+      #feed(class="container")
+        //- .col-lg-6(v-for='mark in marks')
+        .card(v-for='mark in marks')
+          .card-header
+            .row
+              .col-2
+                img.d-block.rounded-circle.img-fluid(src='https://randomuser.me/api/portraits/men/74.jpg')
+              .col.d-flex.align-items-center.pl-0
+                h5.card-title @{{ mark.owner }}
+          .card-body
+            p.card-text {{ mark.body }}
+          .card-footer.text-muted
+            .row(style='font-size:0.8rem')
+              .col-5
+                p.mb-0.text-muted {{ mark.createdAt }}
+              .col-4
+                p.mb-0.text-muted 326 likes
+              .col-3.text-right
+                a(href='#') Like
+
 
   //-  #demo
   //-    h1 Mark Feed

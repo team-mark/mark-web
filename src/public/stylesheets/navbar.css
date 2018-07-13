@@ -7,3 +7,8 @@
   border-radius: 6px;
   padding: .8rem
 }
+
+.navbar {
+  border: 0;
+  border-bottom: medium solid gainsboro;
+}
