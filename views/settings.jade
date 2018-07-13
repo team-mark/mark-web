@@ -1,6 +1,51 @@
-extends layout
+extends settingsLayout
 
 block content
-    title=title
-    #settings
-        
+  #settings
+    .section.account-banner
+      .row 
+
+        .card.settings-card
+          .card-header
+            .row
+              .col-2
+                img.d-block.rounded-circle.img-fluid(src='https://randomuser.me/api/portraits/men/74.jpg')
+              .col.d-flex.align-items-center.pl-0
+                h5.card-title @jakef
+            //- .row
+            .row(style='font-size:0.8rem').user-stats
+              p.card-text 420 followers
+              p.card-text 380 following
+              //- p.card-text 750 marks
+            .row.edit-profile
+              a(href="/edit-profile") Edit Profile
+            //- .row(style='font-size:0.8rem')
+              //- .col-5
+              //-   p.mb-0.text-muted {{ mark.createdAt }}
+              //- .col-4
+              //-   p.mb-0.text-muted 326 likes
+              //- .col-3.text-right
+              //-   a(href='#') Like
+
+    .section.content-spacer
+    .section.user-options
+      .row.account-row    
+        ul.list-group.list-group-flush
+          //- li.list-group-item
+          //-   a(href="/account") Account
+          li.list-group-item
+            a(href="/followers") Followers
+          li.list-group-item
+            a(href="/following") Following
+    .section.content-spacer
+    .section.user-options.mark-information
+      .row.account-row
+        ul.list-group.list-group-flush
+          //- li.list-group-item
+          //-   a(href="/account") Account
+          li.list-group-item
+            a(href="/about") About Mark
+          li.list-group-item
+            a(href="/terms") Terms of Use
+    
+    .section.content-spacer

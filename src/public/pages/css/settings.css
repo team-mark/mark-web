@@ -1,0 +1,28 @@
+.user-options ul, .user-options ul li {
+    width: 100%;
+    border-radius: 0;
+}
+
+.user-options ul li {
+    
+}
+
+.settings-card {
+    border:none;
+    width: 100%;
+}
+
+.settings-card .card-header > .row > .col-2 {
+    padding-left: 0;
+    padding-right: 1rem;
+}
+
+
+.user-stats, .edit-profile {
+    padding: 0 1rem .4rem 3.4rem
+}
+.user-stats > p {
+    padding: 0;
+    margin: 0 .8rem 0 0;
+
+}

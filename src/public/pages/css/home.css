@@ -1,10 +1,5 @@
 /* Global */
 
-.feed-spacer {
-    /* height: 1rem; */
-    background: gainsboro;
-    height: .8rem;
-}
 /* Search */
 .search-wrapper {
     /* height: 1rem; */
@@ -17,7 +12,7 @@
     padding:0;
 }
 
-#search > input{
+#search > input {
     border-radius: 30px;
     width: 100%;
     margin: 0;

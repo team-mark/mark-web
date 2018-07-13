@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import * as express from 'express';
 
 const router: Router = Router();
 
@@ -20,5 +21,9 @@ router.use('/followers', followers);
 // router.use('/following', following);
 // router.use('/users', users);
 // router.use('/account', users);
+
+router.use('/*', (req: express.Request, res: express.Response) => {
+    res.redirect('/');
+});
 
 module.exports = router;

@@ -50,3 +50,10 @@ h1 {
   /* padding: .5rem; */
 }
 
+
+/* Custom styles */
+.content-spacer {
+  /* height: 1rem; */
+  background: gainsboro;
+  height: .8rem;
+}
