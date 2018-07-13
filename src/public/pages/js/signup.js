@@ -86,7 +86,7 @@ const signup = new Vue({
 
                     // get body data
                     this.response = response.body;
-                    console.log(response)
+                    console.log(MS_TOKEN_KEY, this.response)
 
                     localStorage.setItem(MS_TOKEN_KEY, this.response.token);
                     localStorage.removeItem('mark-signup-roll');

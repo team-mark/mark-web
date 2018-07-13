@@ -27,12 +27,9 @@ const postMark = new Vue({
 
                     if (response.status === 200) {
                         // get body data
-                        localStorage.setItem(MS_TOKEN_KEY, this.response.token);
-                        console.log('token saved');
-                        console.log('login end')
                         window.location = '/';
                     } else {
-                        console.log('invalid login')
+                        console.log('could not make post request')
                         // window.location = '/login';
                     }
                 },

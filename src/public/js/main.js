@@ -8,14 +8,23 @@
 
 // Application globals
 const MS_URL = environment.MS_URL;
+const WEB_URL = environment.WEB_URL;
 const MS_TOKEN_KEY = 'mark-access-token';
 
 // Session
-const accessToken = localStorage.getItem(MS_TOKEN_KEY);
+let accessToken = localStorage.getItem(MS_TOKEN_KEY);
+console.log('accessToken', accessToken, accessToken === 'undefined')
+if (accessToken === 'undefined')
+    accessToken = undefined;
 const isLoggedIn = !!accessToken;
 
-// Functions
+if (!isLoggedIn && !(window.location.pathname === '/signup' || window.location.pathname === '/login')) {
+    console.log(window.location) // = '/login'
+    window.location = '/login'
+}
 
+
+// Functions
 function handleError(error) {
     if (error.response.error_description) {
         alert("Error Code " + error.response.status + ": "
@@ -26,11 +35,7 @@ function handleError(error) {
     console.log(error.response);
 }
 
-if (!isLoggedIn && !(window.location.pathname === '/signup' || window.location.pathname === '/login')) {
-    console.log(window.location) // = '/login'
-    window.location = '/login'
-}
-
 // Load default request settings
 Vue.http.headers.common['Authorization'] = accessToken;
 Vue.http.headers.common['Content-Type'] = 'application/json';
+Vue.http.headers.common['Access-Control-Allow-Origin'] = WEB_URL;

@@ -1,19 +1,39 @@
 extends layout
 
 block content
-  #feed
+  //- #feed
     //- p Sort by:
     //- button(v-on:click="load_feed", type="button") By Date
     //- button(v-on:click="marks_by_likes", type="button") By Likes
     
-    #feed(class="container")
-      mark-component(v-for='mark in marks' 
-        v-on:like_mark="like_mark" 
-        v-bind:content="mark.body" 
-        v-bind:author="mark.author" 
-        v-bind:id="mark.ethereum_id"
-        v-bind:date="mark.createdAt")
+    //- #feed(class="container")
+    //-   mark-component(v-for='mark in marks' 
+    //-     v-on:like_mark="like_mark" 
+    //-     v-bind:content="mark.body" 
+    //-     v-bind:author="mark.author" 
+    //-     v-bind:id="mark.ethereum_id"
+    //-     v-bind:date="mark.createdAt")
 
+  #feed(class="container")
+    .row(v-for='mark in marks')
+      //- .col-lg-6(v-for='mark in marks')
+      .card
+        .card-header
+          .row
+            .col-2
+              img.d-block.rounded-circle.img-fluid(src='https://randomuser.me/api/portraits/men/74.jpg')
+            .col.d-flex.align-items-center.pl-0
+              h5.card-title @{{ mark.owner }}
+        .card-body
+          p.card-text {{ mark.body }}
+        .card-footer.text-muted
+          .row(style='font-size:0.8rem')
+            .col-5
+              p.mb-0.text-muted {{ mark.createdAt }}
+            .col-4
+              p.mb-0.text-muted 326 likes
+            .col-3.text-right
+              a(href='#') Like
 
   //-  #demo
   //-    h1 Mark Feed
@@ -32,8 +52,8 @@ block content
   //-          a(:href='record.author.html_url', target='_blank') {{ record.commit.author.name }}
   //-        |       at 
   //-        span.date {{ record.commit.author.date | formatDate }}
-  a(href="/login") Login
-  br
-  a(href="/signup") Signup
-  br
-  a(href="/error") Error
+  //- a(href="/login") Login
+  //- br
+  //- a(href="/signup") Signup
+  //- br
+  //- a(href="/error") Error
