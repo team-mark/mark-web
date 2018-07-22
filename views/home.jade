@@ -13,7 +13,6 @@ block content
     //-     v-bind:author="mark.author" 
     //-     v-bind:id="mark.ethereum_id"
     //-     v-bind:date="mark.createdAt")
-
   .section.search-wrapper
     .row
       form#search.searchWrapper.col-sm-12
@@ -42,7 +41,7 @@ block content
                 .col-4
                   p.mb-0.text-muted {{likes}} likes
                 .col-3.text-right
-                  button.button-link(v-if="liked" v-on:click="unlike") Unlike
+                  button.button-link(v-if="liked" v-on:click="unlike") Unlike 
                   button.button-link(v-else v-on:click="like") Like
 
 

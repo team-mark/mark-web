@@ -47,8 +47,8 @@ block content
             .form-group
               label(for="inputPassword").sr-only Password
               input(type="password" v-model="inputPassword" placeholder="Password").form-control
-            button(class="btn btn-lg btn-primary btn-block" v-on:click="submitForm" type="button") Sign in
-
+            recaptcha-component(@captcha_result="captchaResult" @captcha_expired="captchaExpired")
+            button(disabled id="loginButton" class="btn btn-lg btn-primary btn-block" v-on:click="submitForm" type="button") Sign in
           a.active(href='/signup') or Create Account
       
     

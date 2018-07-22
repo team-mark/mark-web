@@ -5,10 +5,23 @@ const login = new Vue({
     data: function () {
         return {
             inputUsername: "",
-            inputPassword: ""
+            inputPassword: "",
+            captcha: false,
+            captchaToken: ""
         }
     },
     methods: {
+        captchaResult: function(responseToken) {
+            console.log(responseToken);
+            this.captcha = true;
+            this.captchaToken = responseToken;
+            $('#loginButton').prop('disabled', false);
+        },
+        captchaExpired: function() {
+            this.captcha = false;
+            this.captchaToken = "";
+            $('#loginButton').prop('disabled', true)
+        },
         submitForm: function (message, event) {
             console.log('submit form')
             if (event) event.preventDefault();
@@ -22,6 +35,7 @@ const login = new Vue({
                 handle: this.inputUsername,
                 passwordh: hash,
                 key: hash,
+                captcha: this.captchaToken
             })
                 .then(function (response) {
 
