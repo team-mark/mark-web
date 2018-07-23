@@ -26,8 +26,9 @@ block content
               //- .container
               //-   .large-12.medium-12.small-12.cell
               //- label
-              input.btn.btn-md.btn-primary#file(type='file', ref='file', v-on:change='handleFileUpload' style="::after=none")
-              button.btn.btn-md.btn-primary(v-on:click='submitFile') Upload
+      .row 
+        input#file(type='file', ref='file', v-on:change='handleFileUpload' style="::after=none")
+        button.btn.btn-md.btn-primary(v-on:click='submitFile') Upload
                       
 
             //- .row(style='font-size:0.8rem')

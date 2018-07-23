@@ -1,4 +1,5 @@
 const marksEndpoint = MS_URL + '/api/marks';
+const usersEndpoint = MS_URL + '/api/users';
 const likeEndpoint = MS_URL + '/api/likes';
 const NUMBER_OF_MARKS = 10;
 const feedEndpoint = MS_URL + '/api/feed';
@@ -6,111 +7,188 @@ const followersEndpoint = MS_URL + '/api/followers';
 const accountInfoEndpoint = MS_URL + '/api/accounts/info';
 const updateAvatarEndpoint = MS_URL + '/api/accounts/update-profile-picture'
 
-const profile = new Vue({
-    el: '#profile',
+let editProfile;
+let profile;
+
+editProfile = new Vue({
+    el: '#edit-profile',
     data: function () {
         return {
-            marks: [{}],
-            numFollowers: null,
-            user: {
-                handle: null
-            },
-            fileUpload: null
+            account: {}
         }
     },
     created: function () {
+        const externalContext = this;
+
+        $(document).on('change', ':file', function () {
+            const file = $(this).get(0).files[0]
+            externalContext.handleFileUpload(file)
+        })
+    },
+    methods: {
+        submitFile: function () {
+            /*
+                    Initialize the form data
+                */
+            let formData = new FormData();
+
+            /*
+                Add the form data we need to submit
+            */
+            console.log('adding new file', this.fileUpload)
+
+            formData.append('profile-picture', this.fileUpload);
+            const options = {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            };
+
+
+            this.$http.post(updateAvatarEndpoint, formData, options)
+                .then(function (response) {
+                    console.log('SUCCESS!!');
+                    this.response = response.body;
+                    this.account.avatar = this.response.avatar;
+                    Vue.set(profile.user, 'avatar', this.account.avatar);
+                    $('#file-label').text(file.name)
+
+                })
+                .catch(function (error) {
+                    console.log('FAILURE!!', error);
+                });
+        },
+
+        handleFileUpload: function (file) {
+            this.fileUpload = file;
+            $('#file-label').text(file.name)
+        },
+    }
+});;
+
+profile = new Vue({
+    el: '#profile',
+    data: function () {
+        return {
+            marks: [],
+            followers: [],
+            account: {
+
+            },
+            user: {
+                avatar: 'https://randomuser.me/api/portraits/men/74.jpg'
+            },
+            tagetHandle: '',
+            isFollowing: false
+        }
+    },
+    created: function () {
+        this.targetHandle = window.location.pathname.split('/')[2];
         this.loadProfile();
     },
     methods: {
         loadProfile: function () {
-            console.log('load feed')
-            if (event) event.preventDefault();
+            console.log('load profile')
 
-
+            this.updateUserMarks();
 
             // {
             //     "handle": "jakef",
             //     "address": "0x18c4dcD21A0A4501d6aB13a824b1fbdF0289f5C2",
             //     "balance": "0.000000000000224752"
+            //     "avatar": "http://pictureurl"
             // }
+
+            // Configure browsing account (important not information displayed on page)
             this.$http.get(accountInfoEndpoint, {})
                 .then(response => {
-                    this.response = response.body;
+                    console.log('account info');
+                    this.account = response.body;
+                    console.log('account info avatar', this.account.avatar);
+                    if (this.tagetHandle === this.account.handle) {
+                        Vue.set(editProfile.account, 'avatar', this.account.avatar);
+                    }
 
-                    this.user.handle = this.response.handle;
+                    // Configure user page
+                    this.$http.get(`${usersEndpoint}/${this.targetHandle}`, {})
+                        .then(response => {
+                            console.log('account info');
+                            this.user = response.body;
+                        }).catch(error => {
+                            handleError(error);
+                        });
+
+                    this.updateUserFollowers();
+
                 }).catch(error => {
                     handleError(error);
                 });
 
 
-
-            // this.$http.get(marksEndpoint, {})
-            this.$http.get(feedEndpoint, {})
+        },
+        follow: function () {
+            this.$http.put(`${followersEndpoint}/${this.targetHandle}`, {})
                 .then(function (response) {
-                    console.log('feed returned');
+                    if (response.status === 200) {
+                        console.log('follower added');
+                        this.updateUserFollowers();
+                    } else {
+                        console.log('issue adding follower');
+                        console.log('response.status', response.status);
+                    }
+                },
+                function (error) {
+                    handleError(error);
+                })
+        },
+        unfollow: function () {
+            this.$http.delete(`${followersEndpoint}/${this.targetHandle}`, {})
+                .then(function (response) {
+                    if (response.status === 200) {
+                        console.log('follower removed');
+                        this.updateUserFollowers();
+                    } else {
+                        console.log('issue removing follower');
+                        console.log('response.status', response.status);
+                    }
+                },
+                function (error) {
+                    handleError(error);
+                })
+        },
+        updateUserMarks: function () {
+            this.$http.get(`${marksEndpoint}/${this.targetHandle}`, {})
+                .then(function (response) {
+                    console.log('marks');
                     console.log(response);
 
-                    this.marks = response.data.items;
-                    this.next = response.data.next;
+                    this.marks = response.body.items;
+                    this.next = response.body.next;
                 },
                 function (error) {
                     handleError(error);
                 })
         },
 
-        marks_by_likes: function () {
-            const query = '?sort=' + -1 + '&skip=' + 0 + '&limit=' + NUMBER_OF_MARKS;
-            this.marks = [];
+        updateUserFollowers: function () {
+            this.$http.get(`${followersEndpoint}/${this.targetHandle}`, {})
+                .then(function (response) {
+                    console.log(response);
 
+                    this.followers = response.body.items;
+                    console.log('followers', this.followers);
 
-            this.$http.get(likeEndpoint + '/sort' + query)
-                .then(response => {
-                    var postIds = [];
+                    this.isFollowing = !!this.followers
+                        .filter(f => f.owner === this.account.handle)
+                        .map(f => f.owner)[0];
 
-                    this.response = response.body;
+                    console.log('isFollowing', this.isFollowing);
 
-                    this.response.items.data.forEach(element => {
-                        postIds.push(element._id)
-                    });
-
-                    postIds = JSON.stringify(postIds);
-
-                    this.$http.get(marksEndpoint + '?ids=' + postIds)
-                        .then(response => {
-                            this.response = response.body;
-                            this.marks = response.items;
-                        }).catch(error => {
-                            handleError(error);
-                        });
-                }).catch(error => {
+                    this.next = response.body.next;
+                },
+                function (error) {
                     handleError(error);
-                });
-
-        },
-
-        post_mark: function () {
-            this.$http.post(marksEndpoint, { body: this.new_mark_body })
-                .then(success => {
-                    this.load_feed();
-                }, error => {
-                    handleError(error);
-                });
+                })
         }
-    }
-
-});
-
-const search = new Vue({
-    el: '#search',
-    data: function () {
-        return {
-            searchInput: null,
-        }
-    },
-    methods: {
-        search: function () {
-            console.log('search')
-            // window.location = `/users/${this.searchInput}`
-        },
     }
 });

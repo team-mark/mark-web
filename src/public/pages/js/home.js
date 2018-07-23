@@ -125,8 +125,6 @@ const feed = new Vue({
                 function (error) {
                     handleError(error);
                 })
-
-
         },
 
 
@@ -186,9 +184,8 @@ const search = new Vue({
         search: function (event) {
             if (event) event.preventDefault();
 
-            // if (this.isActive)
+            const query = $('#searchInput').val()
 
-            const query = event.data;
 
             this.$http.get(`${searchEndpoint}?query=${query}`, {})
                 .then(response => {

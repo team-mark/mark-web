@@ -10,9 +10,9 @@ router.get('/:handle', userProfile);
 function userProfile(req: express.Request, res: express.Response, next: express.NextFunction): void {
     const { handle } = req.params;
     res.render('profile', {
-        title: 'Mark Settings',
-        pageScript: 'settings',
-        pageStyle: 'settings',
+        title: handle,
+        pageScript: 'profile',
+        pageStyle: 'profile',
         environment: JSON.stringify(localconfig.getLocalConfig())
     });
 }

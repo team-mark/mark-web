@@ -8,7 +8,7 @@ const followingEndpoint = MS_URL + '/api/following';
 const accountInfoEndpoint = MS_URL + '/api/accounts/info';
 const updateAvatarEndpoint = MS_URL + '/api/accounts/update-profile-picture'
 
-const profile = new Vue({
+const settings = new Vue({
     el: '#settings',
     data: function () {
         return {
@@ -71,40 +71,6 @@ const profile = new Vue({
                 .catch(error => {
                     handleError(error);
                 });
-        },
-
-        submitFile: function () {
-            /*
-                    Initialize the form data
-                */
-            let formData = new FormData();
-
-            /*
-                Add the form data we need to submit
-            */
-            console.log('adding new file', this.fileUpload)
-
-            formData.append('profile-picture', this.fileUpload);
-            const options = {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            };
-
-
-            this.$http.post(updateAvatarEndpoint, formData, options)
-                .then(function (response) {
-                    console.log('SUCCESS!!');
-                    this.response = response.body;
-                    this.user.avatar = this.response.avatar;
-                })
-                .catch(function (error) {
-                    console.log('FAILURE!!', error);
-                });
-        },
-
-        handleFileUpload: function () {
-            this.fileUpload = this.$refs.file.files[0];
         },
     }
 

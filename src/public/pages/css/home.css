@@ -8,7 +8,7 @@
     /* border-bottom: thin solid darkgray */
     position: relative;
     overflow: visible;
-    z-index: 3000;
+    z-index: 500;
 }
 
 #search {
@@ -49,6 +49,8 @@
     top: 19px;
     z-index: 1000;
     width: 100%;
+    border-radius: 0 0 2px 2px;
+    overflow: hidden
 }
 
 .search-results-list > li {
@@ -98,7 +100,11 @@
 }
 
 .card-title {
-    margin: 0 0 .25rem 0;
+    margin: 0
+}
+
+.card-timestamp {
+    font-size:.8rem;
 }
 
 .card-footer {

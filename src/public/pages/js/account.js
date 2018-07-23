@@ -18,8 +18,8 @@ Vue.component('follower-component', {
 
 const accountInfoEndpoint = MS_URL + "/api/accounts/info"
 
-const followers = new Vue({
-    el: '#settings',
+const account = new Vue({
+    el: '#account',
     data: function () {
         return {
             handle: null,
@@ -30,6 +30,7 @@ const followers = new Vue({
     },
     created: function () {
         this.getAccountInfo();
+        console.log('account')
     },
     methods: {
         loadAccountInfo: function () {

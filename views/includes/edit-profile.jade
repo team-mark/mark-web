@@ -1,0 +1,17 @@
+
+#edit-profile-modal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='edit-profile-modal-label', aria-hidden='true')
+  .modal-dialog(role='document')
+    #edit-profile.modal-content
+      .modal-header
+        h5#edit-profile-modal-label.modal-title Edit Profile
+        button.close(type='button', data-dismiss='modal', aria-label='Close')
+          span(aria-hidden='true') &times;
+      .modal-body
+        img(:src="account.avatar").d-block.rounded-circle.img-fluid.mx-auto.mb-4.profile-avatar
+        //- input#file(type='file', style="::after=none").mx-auto
+        .custom-file
+          input#file.mx-auto(type='file' ref='file', v-on:change='handleFileUpload' )
+          label#file-label.custom-file-label(for='file' v-on:change='console.log("test")') Choose file
+      .modal-footer
+        button.btn.btn-md.btn-primary(v-on:click='submitFile') Save
+

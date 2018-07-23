@@ -16,7 +16,7 @@ block content
   .section.search-wrapper
     .row()
       form#search.search-wrapper.col-sm-12(@submit="search")
-        input.form-control.mr-sm-2(@input="search" type='search', placeholder='Search', aria-label='Search' v-model="searchInput")
+        input#searchInput.form-control.mr-sm-2(@input="search" type='search', placeholder='Search', aria-label='Search' v-model="searchInput" value="")
         #search-results
           .search-results-spacer
           ul.list-group.list-group-flush.search-results-list
@@ -37,13 +37,13 @@ block content
                   //- .col-2
               .col-10
                 .row
-                  .col.align-items-center.pl-0
+                  .col-12.align-items-center.p-0.mb-1
                     a(v-bind:href="'/users/' + mark.owner")
                       h5.card-title @{{ mark.owner }}
+                  .col-12.p-0
+                    p.card-timestamp.text-muted.p-0.mb-1 {{ mark.createdAt }}
                 p.card-text {{ mark.body }}
             .card-footer.row.text-muted(style='font-size:0.8rem')
-                .col-4.offset-2
-                  p.mb-0.text-muted {{ mark.createdAt }}
                 .col-3
                   p.mb-0.text-muted {{likes}} likes
                 .col-2
