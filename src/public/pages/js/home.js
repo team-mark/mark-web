@@ -1,6 +1,7 @@
 const marksEndpoint = MS_URL + '/api/marks';
 const likeEndpoint = MS_URL + '/api/likes';
 const usersEndpoint = MS_URL + '/api/users';
+const searchEndpoint = MS_URL + '/api/search';
 const NUMBER_OF_MARKS = 10;
 
 const feedEndpoint = MS_URL + '/api/feed';
@@ -177,17 +178,95 @@ const search = new Vue({
     data: function () {
         return {
             searchInput: null,
-            results: []
+            results: [],
+            isActive: false
         }
     },
     methods: {
-        search: function (message, event) {
-            if (event) event.preventDefault()
-            message.preventDefault()
+        search: function (event) {
+            if (event) event.preventDefault();
 
-            console.log('message', message)
-            console.log('event', event)
+            // if (this.isActive)
+
+            const query = event.data;
+
+            this.$http.get(`${searchEndpoint}?query=${query}`, {})
+                .then(response => {
+                    if (response.status === 200)
+                        console.log(response.body);
+                    console.log(response.status);
+                    this.results = response.body.items
+
+                    if (this.results.length) {
+                        $('#search-results').show()
+                    } else {
+                        $('#search-results').hide()
+                    }
+
+                }, error => {
+                    handleError(error);
+                });
+
         },
     }
 });
 
+
+// Vue.component('mark-component', {
+//     props: ['mark'],
+//     data: function () {
+//         return {
+//             likes: 0,
+//             imgsrc: null,   // if the post is an image this holds the url
+//             picture: false,
+//             profile_img: "https://randomuser.me/api/portraits/men/74.jpg",
+//             liked: false
+//         }
+//     },
+//     computed: {
+//         post_id: function () {
+//             return this.mark.id;
+//         },
+//         text: function () {
+//             return this.mark.body;
+//         }
+//     },
+//     created: function () {
+
+//         if (this.text && this.text.match(/https?:\/\/.*\.(?:png|jpg)/i)) {
+//             this.imgsrc = this.text;
+//             this.picture = true;
+//         }
+
+//         this.$http.get(likeEndpoint + '/' + this.post_id)
+//             .then(response => {
+//                 this.likes = response.data.items
+//             }, error => {
+//                 console.log(error.data);
+//             });
+//     },
+//     methods: {
+//         like: function (event) {
+//             console.log("Like:", this.mark.id)
+//             this.$http.put(likeEndpoint, { postId: this.mark.id })
+//                 .then(response => {
+//                     console.log("Like added!");
+//                     this.likes = this.likes + 1;
+//                     this.liked = true;
+//                 }, error => {
+//                     handleError(error);
+//                 });
+//         },
+//         unlike: function (event) {
+//             console.log("Like:", this.mark.id)
+//             this.$http.delete(likeEndpoint + '/' + this.mark.id)
+//                 .then(response => {
+//                     console.log("Like deleted!");
+//                     this.likes = this.likes - 1;
+//                     this.liked = false;
+//                 }, error => {
+//                     handleError(error);
+//                 });
+//         }
+//     }
+// })

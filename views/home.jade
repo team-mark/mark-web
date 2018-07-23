@@ -15,12 +15,13 @@ block content
     //-     v-bind:date="mark.createdAt")
   .section.search-wrapper
     .row()
-      form#search.search-wrapper.col-sm-12
-        input.form-control.mr-sm-2(type='search', placeholder='Search', aria-label='Search' v-model="searchInput" v-on:change.prevent="search" v-on:submit.prevent="search")
+      form#search.search-wrapper.col-sm-12(@submit="search")
+        input.form-control.mr-sm-2(@input="search" type='search', placeholder='Search', aria-label='Search' v-model="searchInput")
         #search-results
           .search-results-spacer
-            //- ul.list-group.list-group-flush(v-model="results" v-for='result in results' v-bind:result="result")
-            //-   li.list-group-item {{ result.handle }}
+          ul.list-group.list-group-flush.search-results-list
+            li.list-group-item(v-for='result in results')
+              a(:href="'/users/' + result.handle") {{ result.handle }}
 
   .section.content-spacer
   .section.feed-content
@@ -28,26 +29,26 @@ block content
       #feed(class="container")
         mark-component(v-for='mark in marks' v-bind:mark="mark" inline-template)
           .card
-            .card-header
-              .row
-                .col-2
-                  a(v-bind:href="'/users/' + mark.owner")
-                    img.d-block.rounded-circle.card-avatar(:src='mark.avatar')
-                .col.d-flex.align-items-center.pl-0
-                  a(v-bind:href="'/users/' + mark.owner")
-                    h5.card-title @{{ mark.owner }}
-            .card-body
-              img.card-image(v-if="picture" v-bind:src="imgsrc")
-              p.card-text(v-else) {{ mark.body }}
-            .card-footer.text-muted
-              .row(style='font-size:0.8rem')
-                .col-5
+            //- .card-header
+            .card-body.row
+              .col-2
+                a(v-bind:href="'/users/' + mark.owner")
+                  img.d-block.rounded-circle.card-avatar(:src="mark.avatar")
+                  //- .col-2
+              .col-10
+                .row
+                  .col.align-items-center.pl-0
+                    a(v-bind:href="'/users/' + mark.owner")
+                      h5.card-title @{{ mark.owner }}
+                p.card-text {{ mark.body }}
+            .card-footer.row.text-muted(style='font-size:0.8rem')
+                .col-4.offset-2
                   p.mb-0.text-muted {{ mark.createdAt }}
-                .col-4
+                .col-3
                   p.mb-0.text-muted {{likes}} likes
-                .col-3.text-right
-                  button.button-link(v-if="liked" v-on:click="unlike") Unlike 
-                  button.button-link(v-else v-on:click="like") Like
+                .col-2
+                  a.button-link(v-if="liked" v-on:click="unlike") Unlike 
+                  a.button-link(v-else v-on:click="like") Like
 
 
   //-  #demo
