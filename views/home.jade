@@ -14,23 +14,28 @@ block content
     //-     v-bind:id="mark.ethereum_id"
     //-     v-bind:date="mark.createdAt")
   .section.search-wrapper
-    .row
-      form#search.searchWrapper.col-sm-12
-        input.form-control.mr-sm-2(type='search', placeholder='Search', aria-label='Search' v-model="searchInput" v-on:submit="search")
+    .row()
+      form#search.search-wrapper.col-sm-12
+        input.form-control.mr-sm-2(type='search', placeholder='Search', aria-label='Search' v-model="searchInput" v-on:change.prevent="search" v-on:submit.prevent="search")
+        #search-results
+          .search-results-spacer
+            //- ul.list-group.list-group-flush(v-model="results" v-for='result in results' v-bind:result="result")
+            //-   li.list-group-item {{ result.handle }}
+
   .section.content-spacer
   .section.feed-content
     .row
       #feed(class="container")
-        mark-component(v-for='mark in marks'
-          v-bind:mark="mark"
-          inline-template)
+        mark-component(v-for='mark in marks' v-bind:mark="mark" inline-template)
           .card
             .card-header
               .row
                 .col-2
-                  img.d-block.rounded-circle.img-fluid(:src='profile_img')
+                  a(v-bind:href="'/users/' + mark.owner")
+                    img.d-block.rounded-circle.card-avatar(:src='mark.avatar')
                 .col.d-flex.align-items-center.pl-0
-                  h5.card-title @{{ mark.owner }}
+                  a(v-bind:href="'/users/' + mark.owner")
+                    h5.card-title @{{ mark.owner }}
             .card-body
               img.card-image(v-if="picture" v-bind:src="imgsrc")
               p.card-text(v-else) {{ mark.body }}

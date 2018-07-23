@@ -1,5 +1,6 @@
 const marksEndpoint = MS_URL + '/api/marks';
 const likeEndpoint = MS_URL + '/api/likes';
+const usersEndpoint = MS_URL + '/api/users';
 const NUMBER_OF_MARKS = 10;
 
 const feedEndpoint = MS_URL + '/api/feed';
@@ -32,7 +33,7 @@ Vue.component('mark-component', {
 
         this.$http.get(likeEndpoint + '/' + this.post_id)
             .then(response => {
-                this.likes = response.data.items.length
+                this.likes = response.data.items
             }, error => {
                 console.log(error.data);
             });
@@ -51,7 +52,7 @@ Vue.component('mark-component', {
         },
         unlike: function (event) {
             console.log("Like:", this.mark.id)
-            this.$http.delete(likeEndpoint + '/' + this.mark.id )
+            this.$http.delete(likeEndpoint + '/' + this.mark.id)
                 .then(response => {
                     console.log("Like deleted!");
                     this.likes = this.likes - 1;
@@ -67,7 +68,7 @@ const feed = new Vue({
     el: '#feed',
     data: function () {
         return {
-            marks: [{}],
+            marks: [],
         }
     },
     created: function () {
@@ -90,18 +91,44 @@ const feed = new Vue({
             //     ]
             // }
 
-            this.$http.get(marksEndpoint, {})
+            // this.$http.get(marksEndpoint, {})
+            this.$http.get(feedEndpoint, {})
                 .then(function (response) {
                     console.log('feed returned');
                     console.log(response);
 
                     this.marks = response.data.items;
                     this.next = response.data.next;
-                },
-                    function (error) {
-                        handleError(error);
+
+                    const handles = Array.from(new Set(this.marks.map(m => m.owner)))
+                    console.log(handles)
+                    console.log(this.marks)
+                    handles.forEach(handle => {
+
+                        this.$http.get(`${usersEndpoint}/${handle}`, {})
+                            .then(function (response) {
+
+                                console.log(response.body)
+                                this.marks.forEach((mark, index) => {
+                                    console.log(`${mark.owner} === ${handle}`, response.body.avatar)
+                                    if (mark.owner === handle) {
+                                        this.marks[index].avatar = response.body.avatar;
+                                    }
+                                })
+                                console.log(this.marks)
+
+                            })
                     })
+
+                },
+                function (error) {
+                    handleError(error);
+                })
+
+
         },
+
+
 
         marks_by_likes: function () {
             const query = '?sort=' + -1 + '&skip=' + 0 + '&limit=' + NUMBER_OF_MARKS;
@@ -150,12 +177,17 @@ const search = new Vue({
     data: function () {
         return {
             searchInput: null,
+            results: []
         }
     },
     methods: {
-        search: function () {
-            console.log('search')
-            // window.location = `/users/${this.searchInput}`
+        search: function (message, event) {
+            if (event) event.preventDefault()
+            message.preventDefault()
+
+            console.log('message', message)
+            console.log('event', event)
         },
     }
 });
+

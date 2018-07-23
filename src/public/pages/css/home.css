@@ -6,6 +6,7 @@
     padding: 1rem;
     border: none;
     /* border-bottom: thin solid darkgray */
+    position: relative;
 }
 
 #search {
@@ -17,7 +18,24 @@
     width: 100%;
     margin: 0;
     height: 40px;
+    z-index:10;
+    position: relative;
 }
+
+
+#search-results {
+    position: relative;
+    top: -20px;
+    width:100%;
+    z-index:0;
+}
+
+.search-results-spacer {
+    background:gainsboro;
+    height:20px;
+    z-index:5;
+}
+
 
 
 /* Feed */

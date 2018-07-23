@@ -9,16 +9,27 @@ block content
           .card-header
             .row
               .col-2
-                img.d-block.rounded-circle.img-fluid(src='https://randomuser.me/api/portraits/men/74.jpg')
+                img.d-block.rounded-circle.img-fluid(v-bind:src='user.avatar')
               .col.d-flex.align-items-center.pl-0
-                h5.card-title @jakef
+                h5.card-title @{{ user.handle }}
             //- .row
             .row(style='font-size:0.8rem').user-stats
-              p.card-text 420 followers
-              p.card-text 380 following
+              p.card-text {{ user.numFollowers}} followers
+              p.card-text  {{ user.numFollowing }} following
               //- p.card-text 750 marks
             .row.edit-profile
-              a(href="/edit-profile") Edit Profile
+              //- a(href="#", data-toggle='modal', data-target='#exampleModal') 
+                //- p edit profile
+
+                                
+              //- template
+              //- .container
+              //-   .large-12.medium-12.small-12.cell
+              //- label
+              input.btn.btn-md.btn-primary#file(type='file', ref='file', v-on:change='handleFileUpload' style="::after=none")
+              button.btn.btn-md.btn-primary(v-on:click='submitFile') Upload
+                      
+
             //- .row(style='font-size:0.8rem')
               //- .col-5
               //-   p.mb-0.text-muted {{ mark.createdAt }}
