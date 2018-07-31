@@ -77,7 +77,7 @@ const signup = new Vue({
 
                 }, function (error) {
                     // error callback
-                    console.log(error)
+                    handleError(error);
                     this.response = error;
                 });
 

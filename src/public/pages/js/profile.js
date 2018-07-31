@@ -55,7 +55,7 @@ editProfile = new Vue({
 
                 })
                 .catch(function (error) {
-                    console.log('FAILURE!!', error);
+                    handleError(error);
                 });
         },
 

@@ -13,7 +13,7 @@ const MS_TOKEN_KEY = 'mark-access-token';
 
 // Session
 let accessToken = localStorage.getItem(MS_TOKEN_KEY);
-console.log('accessToken', accessToken, accessToken === 'undefined')
+// console.log('accessToken', accessToken, accessToken === 'undefined')
 if (accessToken === 'undefined')
     accessToken = undefined;
 const isLoggedIn = !!accessToken;
@@ -25,14 +25,18 @@ if (!isLoggedIn && !(window.location.pathname === '/signup' || window.location.p
 
 
 // Functions
+
+/**
+ * Logs response errors and gives an alert to the user. Call after most (every?) request
+ * 
+ * @param {error response} error
+ */
 function handleError(error) {
-    if (error.response.error_description) {
-        alert("Error Code " + error.response.status + ": "
-            + error.response.error_description);
-    } else {
-        alert("Error Code " + error.response.status);
-    }
-    console.log(error.response);
+    alert("Error Code " + error.status +
+        ((error.statusText != null) ? ": " + error.statusText : "") +
+        ((error.bodyText != null) ? "\n" + error.bodyText : ""));
+
+    console.log(error);
 }
 
 // Load default request settings
