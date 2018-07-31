@@ -18,6 +18,7 @@ block content
               p.card-text  {{ user.numFollowing }} following
               //- p.card-text 750 marks
             .row.edit-profile
+<<<<<<< HEAD
               //- a(href="#", data-toggle='modal', data-target='#exampleModal') 
                 //- p edit profile
 
@@ -30,6 +31,9 @@ block content
         input#file(type='file', ref='file', v-on:change='handleFileUpload' style="::after=none")
         button.btn.btn-md.btn-primary(v-on:click='submitFile') Upload
                       
+=======
+              a(href="/edit-profile") Edit Profile
+>>>>>>> refs/remotes/origin/master
 
             //- .row(style='font-size:0.8rem')
               //- .col-5
@@ -38,7 +42,17 @@ block content
               //-   p.mb-0.text-muted 326 likes
               //- .col-3.text-right
               //-   a(href='#') Like
-
+    .section.content-spacer
+    .section.user-options
+    .col-sm
+      p Options
+      .row
+        .col
+          p Filter Bot Content
+        .col
+          label.switch
+            input(id="botFilter" type="checkbox"  onchange="toggleBotFilter(this)")
+            span.slider
     .section.content-spacer
     .section.user-options
       .row.account-row    

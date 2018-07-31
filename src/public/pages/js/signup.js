@@ -96,7 +96,8 @@ const signup = new Vue({
                 roll,
                 state,
                 code,
-                key: hash
+                key: hash,
+                captcha: this.captchaToken
 
             })
                 .then(function (response) {

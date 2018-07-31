@@ -92,8 +92,18 @@ const feed = new Vue({
             //     ]
             // }
 
+<<<<<<< HEAD
             // this.$http.get(marksEndpoint, {})
             this.$http.get(feedEndpoint, {})
+=======
+            const filterBots = localStorage.getItem("mark-bot-filter");
+            var params = "";
+
+            if(filterBots)
+                params = "?bots=" + filterBots;
+
+            this.$http.get(feedEndpoint + params, {})
+>>>>>>> refs/remotes/origin/master
                 .then(function (response) {
                     console.log('feed returned');
                     console.log(response);
