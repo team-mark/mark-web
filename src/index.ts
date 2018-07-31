@@ -1,7 +1,12 @@
 import * as express from 'express';
 import * as path from 'path';
 import { localconfig } from './utils';
-localconfig.setup();
+import * as fs from 'fs';
+
+const fileExists = fs.existsSync('../localconfig.json');
+if (fileExists) {
+  localconfig.setup();
+}
 
 const cors = require('cors');
 const logger = require('morgan');
