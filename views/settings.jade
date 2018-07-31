@@ -19,6 +19,7 @@ block content
               //- p.card-text 750 marks
             .row.edit-profile
               a(href="/edit-profile") Edit Profile
+
             //- .row(style='font-size:0.8rem')
               //- .col-5
               //-   p.mb-0.text-muted {{ mark.createdAt }}
@@ -26,7 +27,17 @@ block content
               //-   p.mb-0.text-muted 326 likes
               //- .col-3.text-right
               //-   a(href='#') Like
-
+    .section.content-spacer
+    .section.user-options
+    .col-sm
+      p Options
+      .row
+        .col
+          p Filter Bot Content
+        .col
+          label.switch
+            input(id="botFilter" type="checkbox"  onchange="toggleBotFilter(this)")
+            span.slider
     .section.content-spacer
     .section.user-options
       .row.account-row    

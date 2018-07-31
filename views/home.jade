@@ -31,6 +31,7 @@ block content
                   img.d-block.rounded-circle.img-fluid(:src='profile_img')
                 .col.d-flex.align-items-center.pl-0
                   h5.card-title @{{ mark.owner }}
+                    p.badge.badge-info(v-if='mark.bot') BOT
             .card-body
               img.card-image(v-if="picture" v-bind:src="imgsrc")
               p.card-text(v-else) {{ mark.body }}

@@ -90,7 +90,13 @@ const feed = new Vue({
             //     ]
             // }
 
-            this.$http.get(marksEndpoint, {})
+            const filterBots = localStorage.getItem("mark-bot-filter");
+            var params = "";
+
+            if(filterBots)
+                params = "?bots=" + filterBots;
+
+            this.$http.get(feedEndpoint + params, {})
                 .then(function (response) {
                     console.log('feed returned');
                     console.log(response);
