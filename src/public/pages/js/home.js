@@ -2,6 +2,7 @@ const marksEndpoint = MS_URL + '/api/marks';
 const likeEndpoint = MS_URL + '/api/likes';
 const usersEndpoint = MS_URL + '/api/users';
 const searchEndpoint = MS_URL + '/api/search';
+const accountsEndpoint = MS_URL + '/api/accounts';
 const NUMBER_OF_MARKS = 10;
 
 const feedEndpoint = MS_URL + '/api/feed';
@@ -19,30 +20,41 @@ Vue.component('mark-component', {
     },
     computed: {
         post_id: function () {
-            return this.mark.id;
+            return this.mark._id;
         },
         text: function () {
             return this.mark.body;
         }
     },
     created: function () {
+        const username = this.$parent.username;
 
         if (this.text && this.text.match(/https?:\/\/.*\.(?:png|jpg)/i)) {
             this.imgsrc = this.text;
             this.picture = true;
         }
 
-        this.$http.get(likeEndpoint + '/' + this.post_id)
+        // get likes and set component like button
+        this.$http.get(likeEndpoint + '/' + this.mark._id)
             .then(response => {
-                this.likes = response.data.items
+                this.likes = response.data.items.length 
+
+                response.data.items.forEach( element => {
+                    if(element.author == username) {
+                        console.log('test if this works', element.author, username);
+                        this.liked = true;
+                        return;
+                    }
+                });
+
             }, error => {
                 console.log(error.data);
             });
     },
     methods: {
         like: function (event) {
-            console.log("Like:", this.mark.id)
-            this.$http.put(likeEndpoint, { postId: this.mark.id })
+            console.log("Like:", this.mark._id)
+            this.$http.put(likeEndpoint, { id: this.mark._id })
                 .then(response => {
                     console.log("Like added!");
                     this.likes = this.likes + 1;
@@ -52,8 +64,8 @@ Vue.component('mark-component', {
                 });
         },
         unlike: function (event) {
-            console.log("Like:", this.mark.id)
-            this.$http.delete(likeEndpoint + '/' + this.mark.id)
+            console.log("Like:", this.mark._id)
+            this.$http.delete(likeEndpoint + '/' + this.mark._id)
                 .then(response => {
                     console.log("Like deleted!");
                     this.likes = this.likes - 1;
@@ -70,10 +82,18 @@ const feed = new Vue({
     data: function () {
         return {
             marks: [],
+            username: ""
         }
     },
     created: function () {
-        this.loadFeed();
+
+        this.$http.get(accountsEndpoint + '/info', {})
+        .then(function (response) {
+            console.log("account info:", response.body);
+            this.username = response.body.handle;
+            console.log(this.username);
+            this.loadFeed();
+        });
     },
     methods: {
         loadFeed: function () {
