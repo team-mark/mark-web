@@ -15,6 +15,7 @@ block content
               button(id="confirmationButton" class="btn btn-lg btn-primary btn-block", v-on:click="getConfirmationCode",type="button") Get Confirmation Code
             .form-group
               input(disabled id="inputCode" type="text", v-model="inputCode", class="form-control", v-bind:class="{active: isActive}", placeholder="Confirmation Code")
+              recaptcha-component(@captcha_result="captchaResult" @captcha_expired="captchaExpired")
               button(disabled id="createAccountButton" class="btn btn-lg btn-primary btn-block", v-on:click="submitForm", v-bind:class="{active: isActive}", type="button") Submit
             a.active(href='/login') or Login
   

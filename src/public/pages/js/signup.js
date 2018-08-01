@@ -17,9 +17,24 @@ const signup = new Vue({
             max: 2000,
             key: 0, // key, roll, and state may not be of the correct datatype currently
             roll: 0,
-            state: 0
+            state: 0,
+            captcha: false,
+            captchaToken: ""
         }
     }, methods: {
+        captchaResult: function(responseToken) {
+            console.log(responseToken);
+            this.captcha = true;
+            this.captchaToken = responseToken;
+
+            if(this.isActive)
+                $('#createAccountButton').prop('disabled', false);
+        },
+        captchaExpired: function() {
+            this.captcha = false;
+            this.captchaToken = "";
+            $('#createAccountButton').prop('disabled', true);
+        },
         getConfirmationCode: function (message, event) {
 
             if (event) event.preventDefault();
@@ -56,11 +71,13 @@ const signup = new Vue({
                     $('#confirmationButton').prop('disabled', true);
 
                     $('#inputCode').prop('disabled', false);
-                    $('#createAccountButton').prop('disabled', false);
+                    
+                    if(this.captcha)
+                        $('#createAccountButton').prop('disabled', false);
 
                 }, function (error) {
                     // error callback
-                    console.log(error)
+                    handleError(error);
                     this.response = error;
                 });
 
@@ -68,7 +85,7 @@ const signup = new Vue({
         },
         submitForm: function (message, event) {
             console.log('verify start')
-
+            
             const roll = localStorage.getItem('mark-signup-roll');
             const state = localStorage.getItem('mark-signup-state');
             const code = this.inputCode;
@@ -79,7 +96,8 @@ const signup = new Vue({
                 roll,
                 state,
                 code,
-                key: hash
+                key: hash,
+                captcha: this.captchaToken
 
             })
                 .then(function (response) {

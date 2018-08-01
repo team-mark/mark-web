@@ -34,9 +34,7 @@ const postMark = new Vue({
                     }
                 },
                     function (error) {
-                        console.log('post error')
-                        // error callback
-                        console.log(error)
+                        handleError(error);
                     });
         }
     }

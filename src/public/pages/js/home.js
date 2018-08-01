@@ -1,19 +1,28 @@
+const marksEndpoint = MS_URL + '/api/marks';
+const likeEndpoint = MS_URL + '/api/likes';
+const usersEndpoint = MS_URL + '/api/users';
+const searchEndpoint = MS_URL + '/api/search';
+const NUMBER_OF_MARKS = 10;
+
+const feedEndpoint = MS_URL + '/api/feed';
+
 Vue.component('mark-component', {
-    props: ['author', 'content', 'id', 'date'],
+    props: ['mark'],
     data: function () {
         return {
             likes: 0,
-            imgsrc: null,
+            imgsrc: null,   // if the post is an image this holds the url
             picture: false,
-            profile_img: "https://img.buzzfeed.com/buzzfeed-static/static/2014-06/20/11/enhanced/webdr03/enhanced-28723-1403279311-6.jpg"
+            profile_img: "https://randomuser.me/api/portraits/men/74.jpg",
+            liked: false
         }
     },
     computed: {
         post_id: function () {
-            return this.id;
+            return this.mark.id;
         },
         text: function () {
-            return this.content;
+            return this.mark.body;
         }
     },
     created: function () {
@@ -23,76 +32,50 @@ Vue.component('mark-component', {
             this.picture = true;
         }
 
-        this.$http.get(LIKE_ENDPOINT + '/' + this.post_id)
+        this.$http.get(likeEndpoint + '/' + this.post_id)
             .then(response => {
-                this.likes = response.data.length
+                this.likes = response.data.items
             }, error => {
                 console.log(error.data);
             });
     },
-    template: `<div class="container" id="feed">
-        <div class="card">
-        <div class="card-header">
-            <div class="row">
-            <div class="col-2"><img class="d-block rounded-circle img-fluid" src="https://randomuser.me/api/portraits/men/74.jpg"/></div>
-            <div class="col d-flex align-items-center pl-0">
-                <h5 class="card-title">@{{ mark.owner }}</h5>
-            </div>
-            </div>
-        </div>
-        <div class="card-body">
-            <p class="card-text">{{ mark.body }}</p>
-        </div>
-        <div class="card-footer text-muted">
-            <div class="row" style="font-size:0.8rem">
-            <div class="col-5">
-                <p class="mb-0 text-muted">{{ mark.createdAt }}</p>
-            </div>
-            <div class="col-4">
-                <p class="mb-0 text-muted">326 likes</p>
-            </div>
-            <div class="col-3 text-right"><a href="#">Like</a></div>
-            </div>
-        </div>
-        </div>
-        </div>`
+    methods: {
+        like: function (event) {
+            console.log("Like:", this.mark.id)
+            this.$http.put(likeEndpoint, { postId: this.mark.id })
+                .then(response => {
+                    console.log("Like added!");
+                    this.likes = this.likes + 1;
+                    this.liked = true;
+                }, error => {
+                    handleError(error);
+                });
+        },
+        unlike: function (event) {
+            console.log("Like:", this.mark.id)
+            this.$http.delete(likeEndpoint + '/' + this.mark.id)
+                .then(response => {
+                    console.log("Like deleted!");
+                    this.likes = this.likes - 1;
+                    this.liked = false;
+                }, error => {
+                    handleError(error);
+                });
+        }
+    }
 })
-
-// `<div class="card border-dark mb-3">
-//                     <div class="card-header">
-//                         <h6 align="left" class="card-title">{{author}}</h6>
-//                         <small align="right">{{date}}</small>
-//                     </div>
-//                     <div class="card-body">
-//                         <img v-if="picture" v-bind:src="imgsrc" alt="" />
-//                         <p v-else class="card-text">{{content}}</p>
-//                         <div class="container">
-//                             <button v-on:click="$emit(\'like_mark\', id)">Like</button>
-//                             <p>{{likes}}</p>
-//                         </div>
-//                     </div>
-//                 </div>`
-
-const marksEndpoint = MS_URL + '/api/marks';
-const likeEndpoint = MS_URL + '/api/likes';
-const NUMBER_OF_MARKS = 10;
-
-const feedEndpoint = MS_URL + '/api/feed';
-
 
 const feed = new Vue({
     el: '#feed',
     data: function () {
         return {
-            marks: [{}],
+            marks: [],
         }
     },
     created: function () {
         this.loadFeed();
     },
     methods: {
-
-
         loadFeed: function () {
             console.log('load feed')
             if (event) event.preventDefault();
@@ -109,23 +92,47 @@ const feed = new Vue({
             //     ]
             // }
 
+            const filterBots = localStorage.getItem("mark-bot-filter");
+            var params = "";
+
+            // if (filterBots)
+            //     params = "?bots=" + filterBots;
+
             this.$http.get(feedEndpoint, {})
                 .then(function (response) {
-
                     console.log('feed returned');
+                    console.log(response);
 
-                    this.response = response.body;
-                    console.log(this.response);
+                    this.marks = response.data.items;
+                    this.next = response.data.next;
 
-                    this.marks = this.response.items
-                    this.next = this.response.next;
-                    console.log('this.marks', this.marks)
+                    const handles = Array.from(new Set(this.marks.map(m => m.owner)))
+                    console.log(handles)
+                    console.log(this.marks)
+                    handles.forEach(handle => {
+
+                        this.$http.get(`${usersEndpoint}/${handle}`, {})
+                            .then(function (response) {
+
+                                console.log(response.body)
+                                this.marks.forEach((mark, index) => {
+                                    console.log(`${mark.owner} === ${handle}`, response.body.avatar)
+                                    if (mark.owner === handle) {
+                                        this.marks[index].avatar = response.body.avatar;
+                                    }
+                                })
+                                console.log(this.marks)
+
+                            })
+                    })
 
                 },
                     function (error) {
                         handleError(error);
                     })
         },
+
+
 
         marks_by_likes: function () {
             const query = '?sort=' + -1 + '&skip=' + 0 + '&limit=' + NUMBER_OF_MARKS;
@@ -164,15 +171,6 @@ const feed = new Vue({
                 }, error => {
                     handleError(error);
                 });
-        },
-
-        like_mark: function (id) {
-            this.$http.put(LIKE_ENDPOINT, { postId: id })
-                .then(response => {
-                    console.log("Like added!");
-                }, error => {
-                    handleError(error);
-                });
         }
     }
 
@@ -183,12 +181,94 @@ const search = new Vue({
     data: function () {
         return {
             searchInput: null,
+            results: [],
+            isActive: false
         }
     },
     methods: {
-        search: function () {
-            console.log('search')
-            // window.location = `/users/${this.searchInput}`
+        search: function (event) {
+            if (event) event.preventDefault();
+
+            const query = $('#searchInput').val()
+
+
+            this.$http.get(`${searchEndpoint}?query=${query}`, {})
+                .then(response => {
+                    if (response.status === 200)
+                        console.log(response.body);
+                    console.log(response.status);
+                    this.results = response.body.items
+
+                    if (this.results.length) {
+                        $('#search-results').show()
+                    } else {
+                        $('#search-results').hide()
+                    }
+
+                }, error => {
+                    handleError(error);
+                });
+
         },
     }
 });
+
+
+// Vue.component('mark-component', {
+//     props: ['mark'],
+//     data: function () {
+//         return {
+//             likes: 0,
+//             imgsrc: null,   // if the post is an image this holds the url
+//             picture: false,
+//             profile_img: "https://randomuser.me/api/portraits/men/74.jpg",
+//             liked: false
+//         }
+//     },
+//     computed: {
+//         post_id: function () {
+//             return this.mark.id;
+//         },
+//         text: function () {
+//             return this.mark.body;
+//         }
+//     },
+//     created: function () {
+
+//         if (this.text && this.text.match(/https?:\/\/.*\.(?:png|jpg)/i)) {
+//             this.imgsrc = this.text;
+//             this.picture = true;
+//         }
+
+//         this.$http.get(likeEndpoint + '/' + this.post_id)
+//             .then(response => {
+//                 this.likes = response.data.items
+//             }, error => {
+//                 console.log(error.data);
+//             });
+//     },
+//     methods: {
+//         like: function (event) {
+//             console.log("Like:", this.mark.id)
+//             this.$http.put(likeEndpoint, { postId: this.mark.id })
+//                 .then(response => {
+//                     console.log("Like added!");
+//                     this.likes = this.likes + 1;
+//                     this.liked = true;
+//                 }, error => {
+//                     handleError(error);
+//                 });
+//         },
+//         unlike: function (event) {
+//             console.log("Like:", this.mark.id)
+//             this.$http.delete(likeEndpoint + '/' + this.mark.id)
+//                 .then(response => {
+//                     console.log("Like deleted!");
+//                     this.likes = this.likes - 1;
+//                     this.liked = false;
+//                 }, error => {
+//                     handleError(error);
+//                 });
+//         }
+//     }
+// })

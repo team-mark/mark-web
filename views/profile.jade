@@ -2,61 +2,56 @@ title=title
 extends layout
 
 block content
-  #app
-    .container
-      .row
-        .col-lg-3
-          .card.mb-4
-            .card-header
-              h2.h4 Profile
-            .card-body
-              .row
-                .col-lg-12
-                  img(src="https://randomuser.me/api/portraits/men/74.jpg").d-block.rounded-circle.img-fluid.mx-auto.mb-4
-              .row
-                .col-lg-12.text-center
-                  h3.h5.mb-4 @ferrantejake
-              .row
-                .col-lg-12
-                  .card
-                    ul(style="font-size: 0.8rem").list-group.list-group-flush
-                      li.list-group-item.d-flex.align-items-center
-                        i.material-icons.text-primary.mr-2 person
-                        | Jake Ferrante
-                      li.list-group-item.d-flex.align-items-center
-                        i.material-icons.text-primary.mr-2 location_on
-                        | Orlando, FL
-                      li.list-group-item.d-flex.align-items-center
-                        i.material-icons.text-primary.mr-2 group_work
-                        | 3,284 Followers
-                      li.list-group-item.d-flex.align-items-center
-                        i.material-icons.text-primary.mr-2 chat_bubble
-                        | 2,184 Marks
+  .section#profile
+    .row
+      .col-12.mt-4.mb-2
+        .container
+          img(:src="user.avatar").d-block.rounded-circle.img-fluid.mx-auto.mb-0.profile-avatar
 
-        .col-lg-9
+      .col-12.align-items-center.p-0.mb-2.text-center
+        .container          
+          a.active(v-if='targetHandle === account.handle' @click="event => event.preventDefault()" href="#" data-toggle='modal', data-target='#edit-profile-modal').mb-2 edit
+          h5.card-title @{{ user.handle }}
+
+      .col-12.p-0.mb-2.text-center
+        .container(v-if="account.handle !== targetHandle")
+          button(v-if="isFollowing" @click='unfollow').btn-block.btn.btn-default.mx-auto Following
+          button(v-else @click="follow").btn-block.btn.btn-primary.mx-auto Follow
+
+      .col-12.p-0.mb-3
+        .container
+          ul(style="font-size: 0.8rem").list-group
+            li.list-group-item.d-flex.align-items-center
+              i.material-icons.text-primary.mr-2 group_work
+              | {{ followers.length }} Followers
+            li.list-group-item.d-flex.align-items-center
+              i.material-icons.text-primary.mr-2 chat_bubble
+              | {{ marks.length }} Marks
+  
+  .section.content-spacer
+  .section#feed-content
+    .row
+      #personal-feed(class="container")
+        mark-component(v-for='mark in marks' v-bind:mark="mark" inline-template)
           .card
-            .card-header
-              ul.nav.nav-tabs.card-header-tabs
-                li.nav-item
-                  a(href="#").nav-link.active Marks
-                li.nav-item
-                  a(href="#").nav-link Remarks
-            .card-body
-              .col-lg-6.mx-auto
-                .card.mb-4
-                  .card-header
-                    .row
-                      .col-3
-                        img(src="https://randomuser.me/api/portraits/men/74.jpg").d-block.rounded-circle.img-fluid
-                      .col.d-flex.align-items-center.pl-0
-                        h5.mb-0 @ferrantejake
-                  .card-body
-                    p.card-text Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed metus lorem, semper eget erat in, aliquam imperdiet leo. Fusce ac ex et lectus euismod faucibus ac in ante. Nunc laoreet rutrum sagittis.
-                  .card-footer.text-muted
-                    .row(style="font-size:0.8rem")
-                      .col-5
-                        p.mb-0.text-muted 5/12/18 8:03 pm
-                      .col-4
-                        p.mb-0.text-muted 4,833 Likes
-                      .col-3.text-right
-                        a(href="#") Like
+            //- .card-header
+            .card-body.row
+              .col-2
+                a(v-bind:href="'/users/' + mark.owner")
+                  img.d-block.rounded-circle.card-avatar(:src="mark.avatar")
+                  //- .col-2
+              .col-10
+                .row
+                  .col-12.align-items-center.p-0.mb-1
+                    a(v-bind:href="'/users/' + mark.owner")
+                      p.badge.badge-info(v-if='mark.bot') BOT
+                      h5.card-title @{{ mark.owner }}
+                  .col-12.p-0
+                    p.card-timestamp.text-muted.p-0.mb-1 {{ mark.createdAt }}
+                p.card-text {{ mark.body }}
+            .card-footer.row.text-muted(style='font-size:0.8rem')
+                .col-3
+                  p.mb-0.text-muted {{likes}} likes
+                .col-2
+                  a.button-link(v-if="liked" v-on:click="unlike") Unlike 
+                  a.button-link(v-else v-on:click="like") Like
