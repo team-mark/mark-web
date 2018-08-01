@@ -29,7 +29,6 @@ block content
       #feed(class="container")
         mark-component(v-for='mark in marks' v-bind:mark="mark" inline-template)
           .card
-<<<<<<< HEAD
             //- .card-header
             .card-body.row
               .col-2
@@ -40,33 +39,33 @@ block content
                 .row
                   .col-12.align-items-center.p-0.mb-1
                     a(v-bind:href="'/users/' + mark.owner")
+                      p.badge.badge-info(v-if='mark.bot') BOT
                       h5.card-title @{{ mark.owner }}
                   .col-12.p-0
                     p.card-timestamp.text-muted.p-0.mb-1 {{ mark.createdAt }}
                 p.card-text {{ mark.body }}
             .card-footer.row.text-muted(style='font-size:0.8rem')
                 .col-3
-=======
-            .card-header
-              .row
-                .col-2
-                  img.d-block.rounded-circle.img-fluid(:src='profile_img')
-                .col.d-flex.align-items-center.pl-0
-                  h5.card-title @{{ mark.owner }}
-                    p.badge.badge-info(v-if='mark.bot') BOT
-            .card-body
-              img.card-image(v-if="picture" v-bind:src="imgsrc")
-              p.card-text(v-else) {{ mark.body }}
-            .card-footer.text-muted
-              .row(style='font-size:0.8rem')
-                .col-5
-                  p.mb-0.text-muted {{ mark.createdAt }}
-                .col-4
->>>>>>> refs/remotes/origin/master
                   p.mb-0.text-muted {{likes}} likes
                 .col-2
                   a.button-link(v-if="liked" v-on:click="unlike") Unlike 
                   a.button-link(v-else v-on:click="like") Like
+
+            //- .card-header
+            //-   .row
+            //-     .col-2
+            //-       img.d-block.rounded-circle.img-fluid(:src='profile_img')
+            //-     .col.d-flex.align-items-center.pl-0
+            //-       h5.card-title @{{ mark.owner }}
+            //-         p.badge.badge-info(v-if='mark.bot') BOT
+            //- .card-body
+            //-   img.card-image(v-if="picture" v-bind:src="imgsrc")
+            //-   p.card-text(v-else) {{ mark.body }}
+            //- .card-footer.text-muted
+            //-   .row(style='font-size:0.8rem')
+            //-     .col-5
+            //-       p.mb-0.text-muted {{ mark.createdAt }}
+            //-     .col-4
 
 
   //-  #demo

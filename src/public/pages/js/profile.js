@@ -9,6 +9,67 @@ const updateAvatarEndpoint = MS_URL + '/api/accounts/update-profile-picture'
 
 let editProfile;
 let profile;
+let feedContent;
+
+
+Vue.component('mark-component', {
+    props: ['mark'],
+    data: function () {
+        return {
+            likes: 0,
+            imgsrc: null,   // if the post is an image this holds the url
+            picture: false,
+            profile_img: "https://randomuser.me/api/portraits/men/74.jpg",
+            liked: false
+        }
+    },
+    computed: {
+        post_id: function () {
+            return this.mark.id;
+        },
+        text: function () {
+            return this.mark.body;
+        }
+    },
+    created: function () {
+
+        if (this.text && this.text.match(/https?:\/\/.*\.(?:png|jpg)/i)) {
+            this.imgsrc = this.text;
+            this.picture = true;
+        }
+
+        this.$http.get(likeEndpoint + '/' + this.post_id)
+            .then(response => {
+                this.likes = response.data.items
+            }, error => {
+                console.log(error.data);
+            });
+    },
+    methods: {
+        like: function (event) {
+            console.log("Like:", this.mark.id)
+            this.$http.put(likeEndpoint, { postId: this.mark.id })
+                .then(response => {
+                    console.log("Like added!");
+                    this.likes = this.likes + 1;
+                    this.liked = true;
+                }, error => {
+                    handleError(error);
+                });
+        },
+        unlike: function (event) {
+            console.log("Like:", this.mark.id)
+            this.$http.delete(likeEndpoint + '/' + this.mark.id)
+                .then(response => {
+                    console.log("Like deleted!");
+                    this.likes = this.likes - 1;
+                    this.liked = false;
+                }, error => {
+                    handleError(error);
+                });
+        }
+    }
+})
 
 editProfile = new Vue({
     el: '#edit-profile',
@@ -63,6 +124,8 @@ editProfile = new Vue({
             this.fileUpload = file;
             $('#file-label').text(file.name)
         },
+
+
     }
 });;
 
@@ -137,9 +200,9 @@ profile = new Vue({
                         console.log('response.status', response.status);
                     }
                 },
-                function (error) {
-                    handleError(error);
-                })
+                    function (error) {
+                        handleError(error);
+                    })
         },
         unfollow: function () {
             this.$http.delete(`${followersEndpoint}/${this.targetHandle}`, {})
@@ -152,9 +215,9 @@ profile = new Vue({
                         console.log('response.status', response.status);
                     }
                 },
-                function (error) {
-                    handleError(error);
-                })
+                    function (error) {
+                        handleError(error);
+                    })
         },
         updateUserMarks: function () {
             this.$http.get(`${marksEndpoint}/${this.targetHandle}`, {})
@@ -165,9 +228,9 @@ profile = new Vue({
                     this.marks = response.body.items;
                     this.next = response.body.next;
                 },
-                function (error) {
-                    handleError(error);
-                })
+                    function (error) {
+                        handleError(error);
+                    })
         },
 
         updateUserFollowers: function () {
@@ -186,9 +249,39 @@ profile = new Vue({
 
                     this.next = response.body.next;
                 },
-                function (error) {
-                    handleError(error);
-                })
+                    function (error) {
+                        handleError(error);
+                    })
         }
     }
 });
+
+feedContent = new Vue({
+    el: '#feed-content',
+    data: function () {
+        return {
+            marks: [],
+            next: ''
+        }
+    },
+    created: function () {
+        this.targetHandle = window.location.pathname.split('/')[2];
+        this.updateUserMarks();
+    },
+    methods: {
+        updateUserMarks: function () {
+            this.$http.get(`${marksEndpoint}/${this.targetHandle}`, {})
+                .then(function (response) {
+                    console.log('marks');
+                    console.log(response);
+
+                    this.marks = response.body.items;
+                    this.next = response.body.next;
+                },
+                    function (error) {
+                        handleError(error);
+                    })
+        }
+    }
+});
+

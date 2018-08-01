@@ -2,3 +2,72 @@
     height: 180px;
     width:180px;
 }
+
+
+.search-results-spacer {
+    background:gainsboro;
+    height: 19px;
+    z-index: 5;
+    webkit-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.22);
+    box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.22);
+}
+
+/* Feed */
+
+#personal-feed {
+    padding: 0;
+}
+
+.card {
+    width:100%;
+    border-radius: 0px;
+    border: 0;
+    border-bottom: thin solid darkgray
+}
+
+.card-header, .card-body, .card-footer {
+    border:none
+}
+.card-header, .card-footer {
+    background: none;
+}
+
+.card-header > .row > .col-2 {
+    padding-left: 0;
+    padding-right: 1rem;
+}
+
+
+.card-avatar {
+    width:3rem;
+    height:3rem;    
+}
+/* 
+.card-header {
+    padding: 1rem 1.25rem 0;
+}*/
+
+.card-body {
+    padding: 1rem 0 0;
+}
+
+.card-title {
+    margin: 0
+}
+
+.card-timestamp {
+    font-size:.8rem;
+}
+
+.card-footer {
+    padding: 1rem 0 .8rem;
+}
+
+.card-image {
+    max-width: 100%;
+    max-height: 100%;
+}
+.button-link {
+    background:none;
+    border:none;
+}

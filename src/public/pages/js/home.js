@@ -92,18 +92,13 @@ const feed = new Vue({
             //     ]
             // }
 
-<<<<<<< HEAD
-            // this.$http.get(marksEndpoint, {})
-            this.$http.get(feedEndpoint, {})
-=======
             const filterBots = localStorage.getItem("mark-bot-filter");
             var params = "";
 
-            if(filterBots)
-                params = "?bots=" + filterBots;
+            // if (filterBots)
+            //     params = "?bots=" + filterBots;
 
-            this.$http.get(feedEndpoint + params, {})
->>>>>>> refs/remotes/origin/master
+            this.$http.get(feedEndpoint, {})
                 .then(function (response) {
                     console.log('feed returned');
                     console.log(response);
@@ -132,9 +127,9 @@ const feed = new Vue({
                     })
 
                 },
-                function (error) {
-                    handleError(error);
-                })
+                    function (error) {
+                        handleError(error);
+                    })
         },
 
 
