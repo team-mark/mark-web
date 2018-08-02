@@ -1,11 +1,14 @@
 const marksEndpoint = MS_URL + '/api/marks';
 const usersEndpoint = MS_URL + '/api/users';
 const likeEndpoint = MS_URL + '/api/likes';
-const NUMBER_OF_MARKS = 10;
 const feedEndpoint = MS_URL + '/api/feed';
 const followersEndpoint = MS_URL + '/api/followers';
 const accountInfoEndpoint = MS_URL + '/api/accounts/info';
 const updateAvatarEndpoint = MS_URL + '/api/accounts/update-profile-picture'
+
+
+const accountsEndpoint = MS_URL + '/api/accounts';
+const NUMBER_OF_MARKS = 100;
 
 let editProfile;
 let profile;
@@ -20,35 +23,46 @@ Vue.component('mark-component', {
             imgsrc: null,   // if the post is an image this holds the url
             picture: false,
             profile_img: "https://randomuser.me/api/portraits/men/74.jpg",
-            liked: false
+            liked: false,
         }
     },
     computed: {
         post_id: function () {
-            return this.mark.id;
+            return this.mark._id;
         },
         text: function () {
             return this.mark.body;
         }
     },
     created: function () {
+        const username = this.$parent.username;
 
         if (this.text && this.text.match(/https?:\/\/.*\.(?:png|jpg)/i)) {
             this.imgsrc = this.text;
             this.picture = true;
         }
 
-        this.$http.get(likeEndpoint + '/' + this.post_id)
+        // get likes and set component like button
+        this.$http.get(likeEndpoint + '/' + this.mark._id)
             .then(response => {
-                this.likes = response.data.items
+                this.likes = response.data.items.length
+
+                response.data.items.forEach(element => {
+                    if (element.author == username) {
+                        console.log('test if this works', element.author, username);
+                        this.liked = true;
+                        return;
+                    }
+                });
+
             }, error => {
                 console.log(error.data);
             });
     },
     methods: {
         like: function (event) {
-            console.log("Like:", this.mark.id)
-            this.$http.put(likeEndpoint, { postId: this.mark.id })
+            console.log("Like:", this.mark._id)
+            this.$http.put(likeEndpoint, { id: this.mark._id })
                 .then(response => {
                     console.log("Like added!");
                     this.likes = this.likes + 1;
@@ -58,8 +72,8 @@ Vue.component('mark-component', {
                 });
         },
         unlike: function (event) {
-            console.log("Like:", this.mark.id)
-            this.$http.delete(likeEndpoint + '/' + this.mark.id)
+            console.log("Like:", this.mark._id)
+            this.$http.delete(likeEndpoint + '/' + this.mark._id)
                 .then(response => {
                     console.log("Like deleted!");
                     this.likes = this.likes - 1;
@@ -110,6 +124,7 @@ editProfile = new Vue({
                 .then(function (response) {
                     console.log('SUCCESS!!');
                     this.response = response.body;
+                    console.log('response', this.response);
                     this.account.avatar = this.response.avatar;
                     Vue.set(profile.user, 'avatar', this.account.avatar);
                     $('#file-label').text(file.name)
@@ -154,6 +169,7 @@ profile = new Vue({
             console.log('load profile')
 
             this.updateUserMarks();
+            this.targetHandle = window.location.pathname.split('/')[2];
 
             // {
             //     "handle": "jakef",
@@ -172,8 +188,10 @@ profile = new Vue({
                         Vue.set(editProfile.account, 'avatar', this.account.avatar);
                     }
 
+                    const targetHandle = window.location.pathname.split('/')[2]
+
                     // Configure user page
-                    this.$http.get(`${usersEndpoint}/${this.targetHandle}`, {})
+                    this.$http.get(`${usersEndpoint}/${targetHandle}`, {})
                         .then(response => {
                             console.log('account info');
                             this.user = response.body;
@@ -258,29 +276,154 @@ profile = new Vue({
 
 feedContent = new Vue({
     el: '#feed-content',
+    // data: function () {
+    //     return {
+    //         marks: [],
+    //         next: ''
+    //     }
+    // },
+    // created: function () {
+    //     this.targetHandle = window.location.pathname.split('/')[2];
+    //     this.updateUserMarks();
+    // },
+    // methods: {
+    //     updateUserMarks: function () {
+    //         this.$http.get(`${marksEndpoint}/${this.targetHandle}`, {})
+    //             .then(function (response) {
+    //                 console.log('marks');
+    //                 console.log(response);
+
+    //                 this.marks = response.body.items;
+    //                 this.next = response.body.next;
+    //             },
+    //                 function (error) {
+    //                     handleError(error);
+    //                 })
+    //     }
+    // }
+
     data: function () {
         return {
             marks: [],
-            next: ''
+            username: "",
+            account: {},
+            targetHandle: ''
         }
     },
     created: function () {
         this.targetHandle = window.location.pathname.split('/')[2];
-        this.updateUserMarks();
+        this.username = '';
+        this.$http.get(accountsEndpoint + '/info', {})
+            .then(function (response) {
+                console.log("account info:", response.body);
+                this.username = response.body.handle;
+                this.account = response.body;
+                console.log(this.username);
+                this.loadFeed();
+            });
     },
     methods: {
-        updateUserMarks: function () {
+        loadFeed: function () {
+            console.log('load feed')
+            if (event) event.preventDefault();
+
+            // {
+            //     "items": [
+            //         {
+            //             "id": "5b47bbff2e54c01b4cad1501",
+            //             "ethereum_id": "0xcc84db156a77aeb40804785506b6614d0c4837a7560ae90f4bc652ae0bc89837",
+            //             "body": "My first mark!",
+            //             "owner": "jakef",
+            //             "createdAt": "Thu Jul 12 2018"
+            //         }
+            //     ]
+            // }
+
+            const filterBots = localStorage.getItem("mark-bot-filter");
+            var params = "";
+
+            // if (filterBots)
+            //     params = "?bots=" + filterBots;
+
+            this.targetHandle = window.location.pathname.split('/')[2];
+
             this.$http.get(`${marksEndpoint}/${this.targetHandle}`, {})
                 .then(function (response) {
-                    console.log('marks');
+                    console.log('feed returned');
                     console.log(response);
 
-                    this.marks = response.body.items;
-                    this.next = response.body.next;
+                    this.marks = response.data.items;
+                    this.next = response.data.next;
+
+                    const handles = Array.from(new Set(this.marks.map(m => m.owner)))
+                    console.log('handles', handles)
+                    console.log('this.marks', this.marks)
+                    handles.forEach(handle => {
+
+
+                        const targetHandle = window.location.pathname.split('/')[2];
+
+                        this.$http.get(`${usersEndpoint}/${targetHandle}`, {})
+                            .then(function (response) {
+
+                                console.log(response.body)
+                                this.marks.forEach((mark, index) => {
+                                    console.log(`${mark.owner} === ${handle}`, response.body.avatar)
+                                    if (mark.owner === handle) {
+                                        this.marks[index].avatar = response.body.avatar;
+                                    }
+                                })
+                                console.log(this.marks)
+
+                            })
+                    })
+
                 },
                     function (error) {
-                        handleError(error);
+                        console.log(error)
+                        // handleError(error);
                     })
+        },
+
+
+
+        marks_by_likes: function () {
+            const query = '?sort=' + -1 + '&skip=' + 0 + '&limit=' + NUMBER_OF_MARKS;
+            this.marks = [];
+
+
+            this.$http.get(likeEndpoint + '/sort' + query)
+                .then(response => {
+                    var postIds = [];
+
+                    this.response = response.body;
+
+                    this.response.items.data.forEach(element => {
+                        postIds.push(element._id)
+                    });
+
+                    postIds = JSON.stringify(postIds);
+
+                    this.$http.get(marksEndpoint + '?ids=' + postIds)
+                        .then(response => {
+                            this.response = response.body;
+                            this.marks = response.items;
+                        }).catch(error => {
+                            handleError(error);
+                        });
+                }).catch(error => {
+                    handleError(error);
+                });
+
+        },
+
+        post_mark: function () {
+            this.$http.post(marksEndpoint, { body: this.new_mark_body })
+                .then(success => {
+                    this.load_feed();
+                }, error => {
+                    handleError(error);
+                });
         }
     }
 });

@@ -3,9 +3,10 @@ const likeEndpoint = MS_URL + '/api/likes';
 const usersEndpoint = MS_URL + '/api/users';
 const searchEndpoint = MS_URL + '/api/search';
 const accountsEndpoint = MS_URL + '/api/accounts';
-const NUMBER_OF_MARKS = 10;
+const NUMBER_OF_MARKS = 100;
 
 const feedEndpoint = MS_URL + '/api/feed';
+let feed;
 
 Vue.component('mark-component', {
     props: ['mark'],
@@ -15,7 +16,7 @@ Vue.component('mark-component', {
             imgsrc: null,   // if the post is an image this holds the url
             picture: false,
             profile_img: "https://randomuser.me/api/portraits/men/74.jpg",
-            liked: false
+            liked: false,
         }
     },
     computed: {
@@ -37,10 +38,10 @@ Vue.component('mark-component', {
         // get likes and set component like button
         this.$http.get(likeEndpoint + '/' + this.mark._id)
             .then(response => {
-                this.likes = response.data.items.length 
+                this.likes = response.data.items.length
 
-                response.data.items.forEach( element => {
-                    if(element.author == username) {
+                response.data.items.forEach(element => {
+                    if (element.author == username) {
                         console.log('test if this works', element.author, username);
                         this.liked = true;
                         return;
@@ -77,23 +78,25 @@ Vue.component('mark-component', {
     }
 })
 
-const feed = new Vue({
+feed = new Vue({
     el: '#feed',
     data: function () {
         return {
             marks: [],
-            username: ""
+            username: "",
+            account: {}
         }
     },
     created: function () {
-
+        this.username = '';
         this.$http.get(accountsEndpoint + '/info', {})
-        .then(function (response) {
-            console.log("account info:", response.body);
-            this.username = response.body.handle;
-            console.log(this.username);
-            this.loadFeed();
-        });
+            .then(function (response) {
+                console.log("account info:", response.body);
+                this.username = response.body.handle;
+                this.account = response.body;
+                console.log(this.username);
+                this.loadFeed();
+            });
     },
     methods: {
         loadFeed: function () {
