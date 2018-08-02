@@ -39,15 +39,17 @@ block content
                 .row
                   .col-12.align-items-center.p-0.mb-1
                     a(v-bind:href="'/users/' + mark.owner")
-                      p.badge.badge-info(v-if='mark.bot') BOT
+                      p.badge.badge-info(v-if='mark.bot === "BOT"') BOT
                       h5.card-title @{{ mark.owner }}
                   .col-12.p-0
                     p.card-timestamp.text-muted.p-0.mb-1 {{ mark.createdAt }}
-                p.card-text {{ mark.body }}
+                img.card-image(v-if="picture" v-bind:src="imgsrc")
+                p.card-text(v-else) {{ mark.body }}
             .card-footer.row.text-muted(style='font-size:0.8rem')
-                .col-3
+                .col-3.offset-2
                   p.mb-0.text-muted {{likes}} likes
-                .col-2
+                .col-3.offset-3(style="text-aign:center")
+                  //- div(v-if='mark.owner !== account.handle ')
                   a.button-link(v-if="liked" v-on:click="unlike") Unlike 
                   a.button-link(v-else v-on:click="like") Like
 
